@@ -1,4 +1,4 @@
-# Test-Case-Management-System
+# Quality-Assurance-Tool
 
 ## About the Repo
 1. The repo consists of server folder which has all the backend and the middleware code for the application
