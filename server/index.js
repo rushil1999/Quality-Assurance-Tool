@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import mysql from 'mysql';
 
 import testRouter from './routes/testRoutes.js';
+import userRouter from './routes/userRotues.js';
 
 const port = 5000;
 const corsConfig = {
@@ -44,3 +45,4 @@ connection.connect((err) =>{
 
 //Primary Routes
 app.use('/test', testRouter);
+app.use('/user', userRouter);
