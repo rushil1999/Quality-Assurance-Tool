@@ -25,7 +25,7 @@ app.listen(port, () => {
 })
 
 export const connection = mysql.createConnection({
-  host     : 'qa-db.cbm1wfipyose.us-east-1.rds.amazonaws.com',
+  host     : 'qa-tool.cbm1wfipyose.us-east-1.rds.amazonaws.com',
   port     : 3306,
   user     : 'admin',
   password : 'project180b',
