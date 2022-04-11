@@ -6,6 +6,8 @@ import mysql from 'mysql';
 import testRouter from './routes/testRoutes.js';
 import userRouter from './routes/userRotues.js';
 import projectRouter from './routes/projectRoutes.js';
+import componentRouter from  './routes/componentRoutes.js';
+import testCaseRouter from  './routes/testCaseRoutes.js';
 
 const port = 5000;
 const corsConfig = {
@@ -48,3 +50,5 @@ connection.connect((err) =>{
 app.use('/test', testRouter);
 app.use('/user', userRouter);
 app.use('/project', projectRouter);
+app.use('/component', componentRouter);
+app.use('/testCase', testCaseRouter);

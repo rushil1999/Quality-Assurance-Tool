@@ -3,6 +3,7 @@ import { connection } from '../index.js';
 const { compare, genSalt, hash: _hash } = pkg1;
 import { sendCustomError, sendCustomSuccess } from './common.js';
 
+
 export const signUp = async(req, res) => {
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
@@ -10,6 +11,10 @@ export const signUp = async(req, res) => {
   const type = req.body.type;
   const phones = req.body.phones;
   const password = req.body.password;
+
+
+  const getUserByIdQuery = `SELECT * FROM User WHERE e_id = ?`
+  const getLastInerstedIdQuery = `SELECT LAST_INSERT_ID();`;
 
   var sql_findEmail = "SELECT * FROM User WHERE email = ?";
   var sql_insert = "INSERT INTO User (e_id, email, firstName, lastName, phones, pwd, type) values (?, ?, ?, ?, ?, ?, ?)";
@@ -37,7 +42,24 @@ export const signUp = async(req, res) => {
               sendCustomError(res, 205, 'Sign Up Failed');
             }
             else {
-              sendCustomSuccess(res, result[0])
+
+              connection.query(getLastInerstedIdQuery, (err, result) => {  
+                if(result){
+                    let id = result[0]['LAST_INSERT_ID()'];
+                    connection.query(getUserByIdQuery, [id], (err, result)=>{
+                        if(result[0]){
+                            sendCustomSuccess(res, result[0]);
+                        }
+                        else{
+                            sendCustomError(res, 404, 'Entity Not Found');
+                        }
+                    });
+                }
+                else{
+                    console.log(err);
+                    sendInternalServerError(res);
+                }
+              })
             }
           });
         }

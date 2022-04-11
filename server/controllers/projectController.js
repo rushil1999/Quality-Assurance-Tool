@@ -6,7 +6,7 @@ export const addProject = (req, res) => {
           p_id, 
           p_name,
           p_desc, 
-          lead_by,            
+          manager_id,            
       } = req.body;
 
       const getProjectByIdQuery = 'SELECT * FROM Project WHERE p_id = ?;';
@@ -14,14 +14,14 @@ export const addProject = (req, res) => {
       const projectUpdateQuery = `UPDATE Project SET
           p_name = ?,
           p_desc = ?,
-          lead_by = ?
+          manager_id = ?
           WHERE p_id = ?;
       `;
       const projectAddQuery = `INSERT INTO Project (
           p_id,
           p_name,
           p_desc, 
-          lead_by) VALUES (NULL, ?, ?,?)
+          manager_id) VALUES (NULL, ?, ?,?)
       `;
 
       const getLastInerstedIdQuery = `SELECT LAST_INSERT_ID();`;
@@ -30,7 +30,7 @@ export const addProject = (req, res) => {
           connection.query(projectUpdateQuery, [
               p_name,
               p_desc, 
-              lead_by,
+              manager_id,
               p_id,
           ], (err, result) => {
               if(err){
@@ -53,7 +53,7 @@ export const addProject = (req, res) => {
           connection.query(projectAddQuery, [
               p_name,
               p_desc, 
-              lead_by, 
+              manager_id, 
           ], (err, result) => {
 
               if(err){
@@ -61,7 +61,7 @@ export const addProject = (req, res) => {
                   sendInternalServerError(res);
               }
               else{
-                  connection.query(getLastInerstedIdQuery, (err, result) => {
+                  connection.query(getLastInerstedIdQuery, (err, result) => {  
                       if(result){
                           let id = result[0]['LAST_INSERT_ID()'];
                           connection.query(getProjectByIdQuery, [id], (err, result)=>{
@@ -91,7 +91,7 @@ export const addProject = (req, res) => {
 export const getProjectsBasedOnManager = (req, res) => {
   console.log(req);
   const {manager_id} = req.params;
-  const getProjectsBasedOnManager=  "SELECT * FROM Project WHERE lead_by = ?";
+  const getProjectsBasedOnManager=  "SELECT * FROM Project WHERE manager_id = ?";
   const getUserBasedOnId = "SELECT * FROM User WHERE e_id = ?"
   connection.query(getUserBasedOnId, [manager_id], (err, result) => {
     if(result){
