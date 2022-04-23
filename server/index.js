@@ -2,12 +2,14 @@ import express from 'express';
 import cors from  'cors';
 import bodyParser from 'body-parser';
 import mysql from 'mysql';
+import util from 'util';
 
 import testRouter from './routes/testRoutes.js';
 import userRouter from './routes/userRotues.js';
 import projectRouter from './routes/projectRoutes.js';
 import componentRouter from  './routes/componentRoutes.js';
 import testCaseRouter from  './routes/testCaseRoutes.js';
+import bugRouter from  './routes/bugRotues.js';
 
 const port = 5000;
 const corsConfig = {
@@ -34,6 +36,12 @@ export const connection = mysql.createConnection({
   password : 'project180b',
   database: "qa_tool"
 });
+
+// export const db = makeDb();
+// const no = db.connect(connection).then(() => {console.log('connected as id ' + connection.threadId);})
+//   .catch(e=>{console.error('error connecting: ' + err.stack);});
+
+
  
 connection.connect((err) =>{
   if (err) {
@@ -43,6 +51,7 @@ connection.connect((err) =>{
   console.log('connected as id ' + connection.threadId);
 });
 
+connection.query = util.promisify(connection.query).bind(connection);
 
 
 
@@ -52,3 +61,4 @@ app.use('/user', userRouter);
 app.use('/project', projectRouter);
 app.use('/component', componentRouter);
 app.use('/testCase', testCaseRouter);
+app.use('/bug',bugRouter);
