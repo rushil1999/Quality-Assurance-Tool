@@ -2,13 +2,26 @@ import pkg1 from 'bcrypt';
 import { connection } from '../index.js';
 import { insertDeveloper } from '../services/developerService.js';
 import { insertTester } from '../services/testerService.js';
-import { signUpService } from '../services/userService.js';
+import { signUpService, signInService } from '../services/userService.js';
 const { compare, genSalt, hash: _hash } = pkg1;
 import { sendCustomError, sendCustomSuccess, sendInternalServerError } from './common.js';
 
 export const signUp = async (req, res) => {
   const serviceResponse = await signUpService(req.body);
   console.log('SERVICE RESPONSE', serviceResponse);
+  if(serviceResponse.success === true){
+    sendCustomSuccess(res, serviceResponse.data);
+  }
+  else{
+    sendInternalServerError(res);
+  }
+}
+
+
+export const signIn = async (req, res) => {
+  console.log(req.body);
+  const serviceResponse = await signInService(req.body);
+  console.log({serviceResponse});
   if(serviceResponse.success === true){
     sendCustomSuccess(res, serviceResponse.data);
   }

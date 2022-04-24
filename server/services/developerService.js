@@ -1,7 +1,7 @@
 import { connection } from "../index.js";
 import { parseRowDataPacket } from "./parsingService.js";
 
-export const insertDeveloper = async (tester_id) => {
+export const insertDeveloper = async (developer_id) => {
     const testerAddQuery = `INSERT INTO developer (developer_id, no_of_bugs_resolved) VALUES (${developer_id}, ${0})`;
     const result = await connection.query(testerAddQuery);
     console.log('Develoepr Addition result', result);
