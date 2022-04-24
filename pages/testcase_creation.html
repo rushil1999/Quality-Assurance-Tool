@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Test cases creation</title>
+	
+	<script src="https://use.fontawesome.com/65a9174c6a.js"></script>
+
+</head>
+
+<body>
+	<div class="heading">Registration</div>
+	<form>
+		<table class="fieldstable">
+			<tr>
+				<td class="title">User ID:</td>
+				<td>&nbsp;<input type="text" class="textfield" id="userid" required></td>
+			</tr>
+			<tr>
+				<td class="title">Password:</td>
+				<td>
+					<table class="innertable">
+						<tr>
+							<td>
+								<input type="text" class="textfield" id="pass" onfocus="messagebox()"
+									onblur="invalidpass()" oninput="checkPassword()" required>
+							</td>
+							<td id="paragraph" class="paragraph">
+								<p>Must be between 7-20 characters in length and include 4 alpha characters; 1 numeric
+									character (0, 9) or 1 special character (!,#,$,%). The password is case sensitive
+									and must not contain spaces or be the same as your user ID.</p>
+							</td>
+
+							<td class="messagebox" id="messagebox">
+								<p>Password Strength</p>
+								<div class="inner">
+									<p id="upper">1 upper-case letter</p>
+									<p id="lower">1 lower-case letter</p>
+									<p id="number">1 number</p>
+									<p id="length">7 or more characters</p>
+									<p id="char">Use only these characters: A-z, 0-9, !, #, $ and %</p>
+									<p id="same">Your password can not be the same as your user ID.</p><br>
+
+								</div>
+							</td>
+
+							<td class="invalid" id="invalid">Invalid Password</td>
+						</tr>
+					</table>
+			</tr>
+			<tr>
+				<td class="title">Verify Password</td>
+				<td>
+					<table>
+						<td><input type="text" class="textfield" id="verifypas" required onblur="validatePassword()"
+								onkeyup="validatePassword()">
+						</td>
+						<td class="nomatch" id="nomatch">Password do not match.</td>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td class="title">Email Address</td>
+				<td><input type="text" class="textfield" id="email" required></td>
+			</tr>
+			<tr>
+				<td class="title">Verify Email Address</td>
+				<td><input type="text" class="textfield" id="verifyemail" required></td>
+			</tr>
+			<tr>
+				<td class="title">Security Question</td>
+				<td>
+					<select id="question1" required>
+						<option value="">--</option>
+						<option value="5">Sum of 2+3</option>
+						<option value="300">Sum of 100 + 200</option>
+						<option value="2300">23 x 100 = </option>
+						<option value="New Delhi">Capital of India? </option>
+						<option value="Washington, D.C.">Capital of USA?</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="title">Security Answer</td>
+				<td><input type="text" class="textfield" id="answer1" required></td>
+			</tr>
+			<tr>
+				<td class="title">Security Question</td>
+				<td>
+					<select id="question2" required>
+						<option value="">--</option>
+						<option value="5">Sum of 2+3</option>
+						<option value="300">Sum of 100 + 200</option>
+						<option value="2300">23 x 100 = </option>
+						<option value="New Delhi">Capital of India? </option>
+						<option value="Washington, D.C.">Capital of USA?</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="title">Security Answer</td>
+				<td><input type="text" class="textfield" id="answer2" required></td>
+			</tr>
+			<tr>
+				<td class="title">Mobile</td>
+				<td><input type="text" class="textfield" id="mobile" required></td>
+			</tr>
+			<tr>
+				<td class="title">Address</td>
+				<td><textarea id="address" name="address" rows="4" cols="70" required></textarea></td>
+			</tr>
+
+			<tr>
+				<td class="title"></td>
+				<td><textarea id="title" rows="6" name="areas" cols="70" class="textar" required></textarea></td>
+			</tr>
+			<tr>
+				<td class="title"></td>
+				<td>
+					<input type="submit" class="button" value="Register" onclick="final()">
+					<input type="button" class="button" value="Cancel" onclick="rst()">
+					<!--<div id="finalerror" class="finalerror">Please review fields with errors.</div>-->
+				</td>
+			</tr>
+		</table>
+		
+		<div class="progress">
+			<div class="current" id="current">  
+				<b>Strong:</b>
+			</div>
+		</div>
+	</form>
+</body>
+
+</html>
