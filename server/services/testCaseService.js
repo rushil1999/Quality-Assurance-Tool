@@ -36,9 +36,7 @@ export const addTestCaseService = async (testCase) => {
     `;
     if (tc_id) { //Update
       const response = await connection.query(testCaseUpdateQuery);
-      console.log('Updated Test Case', response);
       const insertedObject = await connection.query(getTestCaseByIdQuery);
-      console.log('Inserted Obejct', insertedObject);
       const result = parseRowDataPacket(insertedObject);
       return {
         success: true,
@@ -47,7 +45,6 @@ export const addTestCaseService = async (testCase) => {
     }
     else { //Add New
       const response = await connection.query(testCaseAddQuery);
-      console.log('Updated Test Case', response);
       getTestCaseByIdQuery = `SELECT * FROM TestCase WHERE tc_id = ${response.insertId};`;
       const insertedObject = await connection.query(getTestCaseByIdQuery);
       const result = parseRowDataPacket(insertedObject);
@@ -59,7 +56,10 @@ export const addTestCaseService = async (testCase) => {
   }
   catch (err) {
     console.log(err);
-    sendInternalServerError(res);
+    return {
+      success: false,
+      message: err.message
+    }
   }
 }
 
@@ -67,7 +67,6 @@ export const getTestCasesBasedOnComponentService = async (component_id) => {
   const getTestCasesBasedOnComponentQuery = `SELECT * FROM TestCase WHERE component_id = ${component_id}`;
   try {
     const result = parseRowDataPacket(await connection.query(getTestCasesBasedOnComponentQuery));
-    console.log('Service test case result', result);
     return {
       success: true,
       data: result,
@@ -86,7 +85,6 @@ export const getTestCasesBasedOnTesterService = async (tester_id) => {
   const getTestCasesBasedOnTesterQuery = `SELECT * FROM TestCase WHERE tester_id = ${tester_id}`;
   try {
     const result = parseRowDataPacket(await connection.query(getTestCasesBasedOnTesterQuery));
-    console.log('Service test case result', result);
     return {
       success: true,
       data: result,
