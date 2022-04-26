@@ -1,5 +1,5 @@
 import { connection } from "../index.js";
-import { addProjectService } from "../services/projectService.js";
+import { addProjectService, getProjectsBasedOnManagerService } from "../services/projectService.js";
 import { sendInternalServerError, sendCustomError, sendCustomSuccess } from "./common.js";
 
 
@@ -13,28 +13,40 @@ export const addProject = async (req, res) => {
     }
 }
 
-export const getProjectsBasedOnManager = (req, res) => {
-  console.log(req);
+export const getProjectsBasedOnManager = async (req, res) => {
   const {manager_id} = req.params;
-  const getProjectsBasedOnManager=  "SELECT * FROM Project WHERE manager_id = ?";
-  const getUserBasedOnId = "SELECT * FROM User WHERE e_id = ?"
-  connection.query(getUserBasedOnId, [manager_id], (err, result) => {
-    if(result){
-      connection.query(getProjectsBasedOnManager, [manager_id], (err, result)=>{
-        if(result[0]){
-            sendCustomSuccess(res, result);
-        }
-        else{
-            sendCustomError(res, 404, 'Entity Not Found');
-        }
-      });
-    }
-    else{
-        console.log(err);
-        sendInternalServerError(res);
-    }
-  });
+  const serviceResponse = await getProjectsBasedOnManagerService(manager_id);
+  if(serviceResponse.success === true){
+    sendCustomSuccess(res, serviceResponse.data);
+  }
+  else{
+    sendInternalServerError(res);
+  }
 }
+
+
+// export const getProjectsBasedOnManager = (req, res) => {
+//   console.log(req);
+//   const {manager_id} = req.params;
+//   const getProjectsBasedOnManager=  "SELECT * FROM Project WHERE manager_id = ?";
+//   const getUserBasedOnId = "SELECT * FROM User WHERE e_id = ?"
+//   connection.query(getUserBasedOnId, [manager_id], (err, result) => {
+//     if(result){
+//       connection.query(getProjectsBasedOnManager, [manager_id], (err, result)=>{
+//         if(result[0]){
+//             sendCustomSuccess(res, result);
+//         }
+//         else{
+//             sendCustomError(res, 404, 'Entity Not Found');
+//         }
+//       });
+//     }
+//     else{
+//         console.log(err);
+//         sendInternalServerError(res);
+//     }
+//   });
+// }
 
 // export const addProject = (req, res) => {
     //   try{

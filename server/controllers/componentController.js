@@ -1,5 +1,5 @@
 import { connection} from "../index.js";
-import { addComponentService } from "../services/componentService.js";
+import { addComponentService, getComponentsBasedOnTestLeadService } from "../services/componentService.js";
 import { parseRowDataPacket } from "../services/parsingService.js";
 import { sendInternalServerError, sendCustomError, sendCustomSuccess } from "./common.js";
 
@@ -13,31 +13,42 @@ export const addComponent = async (req, res) => {
     }
 }
 
-export const getComponentsBasedOnTestLead = async (req, res) => {
+export const getComponentsBasedOnTestLead = async(req, res) => {
   const {testlead_id} = req.params;
-  console.log(testlead_id);
-  const getComponentsBasedOnTestLead=  `SELECT * FROM Component WHERE testlead_id = ${testlead_id}`;
-  const getUserBasedOnId = `SELECT * FROM User WHERE e_id = ${testlead_id}`;
-
-  try{
-      const userResponse = await connection.query(getUserBasedOnId);
-      const users = parseRowDataPacket(userResponse);
-      if(users.length >0)
-      {
-
-          const result = await connection.query(getComponentsBasedOnTestLead); 
-          console.log(parseRowDataPacket(result));
-          sendCustomSuccess(res, result);
-      }
-      else{
-          sendCustomError(res, 404, 'Entity Not Found');
-      }
+  const serviceResponse = await getComponentsBasedOnTestLeadService(testlead_id);
+  if(serviceResponse.success === true){
+    sendCustomSuccess(res, serviceResponse.data);
   }
-  catch(e){
-      console.log(e)
-      sendInternalServerError(res);
+  else{
+    sendInternalServerError(res);
   }
 }
+
+// export const getComponentsBasedOnTestLead = async (req, res) => {
+//   const {testlead_id} = req.params;
+//   console.log(testlead_id);
+//   const getComponentsBasedOnTestLead=  `SELECT * FROM Component WHERE testlead_id = ${testlead_id}`;
+//   const getUserBasedOnId = `SELECT * FROM User WHERE e_id = ${testlead_id}`;
+
+//   try{
+//       const userResponse = await connection.query(getUserBasedOnId);
+//       const users = parseRowDataPacket(userResponse);
+//       if(users.length >0)
+//       {
+
+//           const result = await connection.query(getComponentsBasedOnTestLead); 
+//           console.log(parseRowDataPacket(result));
+//           sendCustomSuccess(res, result);
+//       }
+//       else{
+//           sendCustomError(res, 404, 'Entity Not Found');
+//       }
+//   }
+//   catch(e){
+//       console.log(e)
+//       sendInternalServerError(res);
+//   }
+// }
 
 export const getComponentsBasedOnProject = (req, res) => {
   console.log(req);

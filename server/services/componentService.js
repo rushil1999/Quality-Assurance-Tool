@@ -62,3 +62,27 @@ export const addComponentService = async (component) => {
     }
   }
 }
+
+export const getComponentsBasedOnTestLeadService = async (testlead_id) => {
+  console.log(testlead_id);
+  const getComponentsBasedOnTestLead=  `SELECT * FROM Component WHERE testlead_id = ${testlead_id}`;
+  const getUserBasedOnId = `SELECT * FROM User WHERE e_id = ${testlead_id}`;
+
+  try{
+      // const userResponse = await connection.query(getUserBasedOnId);
+      // const users = parseRowDataPacket(userResponse);
+      const response = await connection.query(getComponentsBasedOnTestLead); 
+      const parsedResponse = parseRowDataPacket(response);
+      console.log(parsedResponse);
+      return {
+        success: true,
+        data: parsedResponse
+      }
+  }
+  catch(err){
+    return {
+      success: false,
+      message: err.message
+    }
+  }
+}

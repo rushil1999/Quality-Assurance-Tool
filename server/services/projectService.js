@@ -54,3 +54,23 @@ export const addProjectService = async (project) => {
     }
   }
 }
+
+
+export const getProjectsBasedOnManagerService = async (manager_id) =>{ 
+  const getProjectsBasedOnManager = `SELECT * FROM Project WHERE manager_id = ${manager_id}`;
+  try{
+    const response = await  connection.query(getProjectsBasedOnManager);
+    const parsedResponse = parseRowDataPacket(response);
+    return{
+      success: true,
+      data: parsedResponse
+    }
+  }
+  catch(e){
+    console.log(e);
+    return{
+      success: false,
+      message: e.message
+    }
+  }
+}
