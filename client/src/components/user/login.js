@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {signin} from '../../services/authenticationService';
 import { AuthContext } from '../authentication/ProvideAuth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Radio from '@mui/material/Radio';
 
 
@@ -33,14 +33,15 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignInSide() {
+export default function Login() {
 
   const authContext = useContext(AuthContext);
 
   const {setUser, setAuthState, updateLocalStorage} = authContext;
   const history = useNavigate();
 
-
+  const location = useLocation();
+  console.log('Location', location);
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -52,7 +53,7 @@ export default function SignInSide() {
       setUser(response.data.payload);
       setAuthState(true)
       setTimeout(()=>{
-        history('/Dashboard');
+        history(location.state ? location.state.from.pathname : '/Dashboard');
       }, 500);
     }
     else{

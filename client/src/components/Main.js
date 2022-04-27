@@ -9,9 +9,10 @@ import Signup from './user/signup';
 // import AddCar from './car/AddCar';
 // import Dashboard from './Dashboard';
 import ProvideAuth from './authentication/ProvideAuth';
+import CreateProject from './project/CreateProject';
 // import CarList from './car/CarList';
 // import RideList from './ride/RideList';
-// import PrivateRoute from './authenticaion/PrivateRoute';
+import PrivateRoute from './authentication/PrivateAuth';
 // import AdminAnalysis from './integration/AdminAnalysis';
 // import { BACKEND_URL } from '../services/constants';
 // import { BACKEND_PORT } from '../services/constants';
@@ -79,9 +80,13 @@ const Main = () => {
                         <Route path="/signup"
                           element = {<Signup/>}
                         />
-                         {/* <PrivateRoute path="/profile">
-                            <Profile></Profile>
-                        </PrivateRoute>
+                        <Route path="project/:id"
+                            element={<PrivateRoute path="project/:id" 
+                                element = {<CreateProject/>}
+                            />}
+                        />
+                        
+                        {/*
                         <PrivateRoute path="/pricing">
                             <Pricing></Pricing>
                         </PrivateRoute>
