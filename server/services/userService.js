@@ -96,73 +96,75 @@ export const signUpService = async (user) => {
 
 export const signInService = async (credentials) => {
   const {email, pwd} = credentials;
-  let sql_findEmail = `SELECT * FROM User where email = ?`;
-  const finalObj = connection.query(sql_findEmail, [email], async (err, result) => {
-    console.log(err); 
-    if(result[0]){
-      // const accessToken = createJWT(email, result[0].userId, 3600);
-      // const tokenVerified = verifyToken(accessToken);
-      console.log('Result', result[0], result[0].pwd.toString());
-      console.log(typeof result[0].pwd.toString(), typeof pwd);
-      const match = await pkg1.compare(pwd, result[0].pwd);
-      if(match){
-        return{
-          success:true,
-          data: result,
-        }
-      }
-      else{
-        return{
-          success: false,
-          message: 'Unauthorized User'
-        }
-      }
-    }
-    else {
-      return{
-        success: false,
-        message: 'Could not find entity'
-      }
-    }
-  });
-  return finalObj;
-
-  // try{
-
-  //   const response = await connection.query(sql_findEmail);
-  //   const parsedResponse = parseRowDataPacket(response);
-  //   console.log('Parsed Response', parsedResponse);
-  //   if(parsedResponse.length > 0){
-  //     console.log
-  //     const match = await pkg1.compare(pwd, parsedResponse[0].pwd);
-  //     console.log('Match', match);
+  let sql_findEmail = `SELECT * FROM User where email = '${email}'`;
+  // const finalObj = connection.query(sql_findEmail, [email], async (err, result) => {
+  //   console.log(err); 
+  //   if(result[0]){
+  //     // const accessToken = createJWT(email, result[0].userId, 3600);
+  //     // const tokenVerified = verifyToken(accessToken);
+  //     console.log('Result', result[0], result[0].pwd.toString());
+  //     console.log(typeof result[0].pwd.toString(), typeof pwd);
+  //     const match = pkg1.compareSync(pwd, result[0].pwd.toString());
+  //     console.log(match);
   //     if(match){
-  //       return {
-  //         success: true,
-  //         data: parsedResponse[0]
+  //       return{
+  //         success:true,
+  //         data: result,
   //       }
   //     }
   //     else{
-  //       return {
+  //       return{
   //         success: false,
-  //         message: 'Incorrect Credentials'
+  //         message: 'Unauthorized User'
   //       }
   //     }
-      
   //   }
-  //   else{
-  //     return {
+  //   else {
+  //     return{
   //       success: false,
-  //       message: 'User Not Present'
+  //       message: 'Could not find entity'
   //     }
   //   }
+  // });
+  // console.log('FINAL OBJECT',finalObj);
+  // return finalObj;
 
-  // }
-  // catch(err){
-  //   return{
-  //     success: false,
-  //     message: err.message,
-  //   }
-  // }
+  try{
+
+    const response = await connection.query(sql_findEmail);
+    const parsedResponse = parseRowDataPacket(response);
+    console.log('Parsed Response', parsedResponse);
+    if(parsedResponse.length > 0){
+      console.log
+      const match = await pkg1.compareSync(pwd, parsedResponse[0].pwd.toString());
+      console.log('Match', match);
+      if(match){
+        return {
+          success: true,
+          data: parsedResponse[0]
+        }
+      }
+      else{
+        return {
+          success: false,
+          message: 'Incorrect Credentials'
+        }
+      }
+      
+    }
+    else{
+      return {
+        success: false,
+        message: 'User Not Present'
+      }
+    }
+
+  }
+  catch(err){
+    return{
+      success: false,
+      message: err.message,
+    }
+  }
   
 }  
