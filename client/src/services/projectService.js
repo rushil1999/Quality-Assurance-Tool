@@ -24,3 +24,15 @@ export const addProjectService = async (project) => {
   const data = await response.json();
   return { status, data };
 }
+
+export const fetchProjectListOfManagerService = async(manager_id) => {
+  const options = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  }
+  const response = await fetch(`${BACKEND_URL}:${BACKEND_PORT}/project/manager/${manager_id}`, options);
+  const status = response.status;
+  const data = await response.json();
+  console.log('Project Service ', data);
+  return { status, data };
+}

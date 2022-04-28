@@ -1,5 +1,5 @@
-import React, { useEffect, useState} from 'react';
-import { BrowserRouter as Router, Routes,Route } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './user/login';
 import Signup from './user/signup';
 // import NavBar from './Navbar.js';
@@ -14,6 +14,8 @@ import NavBar from './Navbar';
 // import CarList from './car/CarList';
 // import RideList from './ride/RideList';
 import PrivateRoute from './authentication/PrivateAuth';
+import ProjectList from './project/ProjectList';
+import ComponentList from './testComponent/ComponentList';
 // import AdminAnalysis from './integration/AdminAnalysis';
 // import { BACKEND_URL } from '../services/constants';
 // import { BACKEND_PORT } from '../services/constants';
@@ -24,7 +26,7 @@ const Main = () => {
     const [authState, setAuthState] = useState(false);
     // const [token, setToken] = useState();
 
-    useEffect(()=>{
+    useEffect(() => {
         fetchInitialStateForUser();
     }, []);
 
@@ -32,14 +34,14 @@ const Main = () => {
         // const token = window.localStorage.getItem('token');
         const userObj = window.localStorage.getItem('user');
         const user = JSON.parse(userObj);
-        if(user){
-          setAuthState(true);
-          setUser(user);
-          setLoading(false);
+        if (user) {
+            setAuthState(true);
+            setUser(user);
+            setLoading(false);
         }
-        else{
-          setAuthState(false);
-          setLoading(false);
+        else {
+            setAuthState(false);
+            setLoading(false);
         }
         // if(token && token !== undefined){
         //     console.log('TOKEN', token);
@@ -65,31 +67,48 @@ const Main = () => {
         //     setLoading(false);
         // }
     }
-    return(
+    return (
         <div>
             {!loading && (
                 <>
-                
-                <ProvideAuth value={{user, authState}}>
-                    <NavBar/>
-                    <Router>
-                      <Routes>
-                        {/* <Route path="/"
+
+                    <ProvideAuth value={{ user, authState }}>
+                        <NavBar />
+                        <Router>
+                            <Routes>
+                                {/* <Route path="/"
                             element = {<NavBar/>}
                         />                             */}
-                        <Route path="/login"
-                          element = {<Login/>}
-                        />
-                        <Route path="/signup"
-                          element = {<Signup/>}
-                        />
-                        <Route path="project/:id"
-                            element={<PrivateRoute path="project/:id" 
-                                element = {<CreateProject/>}
-                            />}
-                        />
-                        
-                        {/*
+                                <Route path="/login"
+                                    element={<Login />}
+                                />
+                                <Route path="/signup"
+                                    element={<Signup />}
+                                />
+                                <Route path="project/:id"
+                                    element={<PrivateRoute path="project/:id"
+                                        element={<CreateProject />}
+                                    />}
+                                />
+                                <Route path="project_list/manager/:manager_id"
+                                    element={<PrivateRoute path="project_list/manager/:manager_id"
+                                        element={<ProjectList />}
+                                    />}
+                                />
+
+                                <Route path="component_list/project/:project_id"
+                                    element={<PrivateRoute path="component_list/project/:project_id"
+                                        element={<ComponentList source={'project'}/>}
+                                    />}
+                                />
+
+                                <Route path="component_list/testlead/:testlead_id"
+                                    element={<PrivateRoute path="component_list/testlead/:testlead_id"
+                                        element={<ComponentList source={'testlead'} />}
+                                    />}
+                                />
+
+                                {/*
                         <PrivateRoute path="/pricing">
                             <Pricing></Pricing>
                         </PrivateRoute>
@@ -114,13 +133,13 @@ const Main = () => {
                         <PrivateRoute path="/AdminAnalysis">
                             <AdminAnalysis/>
                         </PrivateRoute> */}
-                        </Routes>
-                    </Router>
-                </ProvideAuth>
-            </>
+                            </Routes>
+                        </Router>
+                    </ProvideAuth>
+                </>
             )
             }
-            </div>
+        </div>
     );
 }
 

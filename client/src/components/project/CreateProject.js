@@ -107,7 +107,7 @@ const CreateProject = () => {
 
         <>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Card variant="outlined" sx={{ width: '70%' }}>
+            <Card variant="outlined" sx={{bgcolor: '#ffffe6', width: '80%'}}>
               <CardHeader title="Project Details">
 
               </CardHeader>
@@ -138,8 +138,8 @@ const CreateProject = () => {
                 <br></br>
                 <br></br>
               </CardContent>
-              <CardActions>
-                <Button onClick={handleSubmit}>Submit</Button>
+              <CardActions style={{justifyContent:'center'}}>
+                <Button variant={'contained'} onClick={handleSubmit}>Submit</Button>
               </CardActions>
             </Card>
           </div>
