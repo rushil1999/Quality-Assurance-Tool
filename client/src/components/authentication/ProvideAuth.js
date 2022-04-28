@@ -33,13 +33,18 @@ const ProvideAuth = props => {
         window.localStorage.setItem('user', JSON.stringify(user));
     }
 
+    const logout = () => {
+        window.localStorage.removeItem('user');
+        setAuthState(false);
+    }
+
     useEffect(()=>{
         // getAuthentication();
     }, []);
 
 
     return (
-        <AuthContext.Provider value={{isAuthenticated: authState, user, setUser, setAuthState, updateLocalStorage}}>
+        <AuthContext.Provider value={{isAuthenticated: authState, user, setUser, setAuthState, updateLocalStorage, logout}}>
             {props.children}
         </AuthContext.Provider>
     );

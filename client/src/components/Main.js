@@ -10,6 +10,7 @@ import Signup from './user/signup';
 // import Dashboard from './Dashboard';
 import ProvideAuth from './authentication/ProvideAuth';
 import CreateProject from './project/CreateProject';
+import NavBar from './Navbar';
 // import CarList from './car/CarList';
 // import RideList from './ride/RideList';
 import PrivateRoute from './authentication/PrivateAuth';
@@ -67,13 +68,15 @@ const Main = () => {
     return(
         <div>
             {!loading && (
+                <>
+                
                 <ProvideAuth value={{user, authState}}>
-                    
+                    <NavBar/>
                     <Router>
                       <Routes>
-                        {/* <Route path="/">
-                            <NavBar></NavBar>
-                        </Route> */}
+                        {/* <Route path="/"
+                            element = {<NavBar/>}
+                        />                             */}
                         <Route path="/login"
                           element = {<Login/>}
                         />
@@ -114,6 +117,7 @@ const Main = () => {
                         </Routes>
                     </Router>
                 </ProvideAuth>
+            </>
             )
             }
             </div>

@@ -1,5 +1,5 @@
 import { connection } from "../index.js";
-import { addProjectService, getProjectsBasedOnManagerService } from "../services/projectService.js";
+import { addProjectService, getProjectsBasedOnManagerService, getProjectsBasedOnIdService } from "../services/projectService.js";
 import { sendInternalServerError, sendCustomError, sendCustomSuccess } from "./common.js";
 
 
@@ -16,6 +16,17 @@ export const addProject = async (req, res) => {
 export const getProjectsBasedOnManager = async (req, res) => {
   const {manager_id} = req.params;
   const serviceResponse = await getProjectsBasedOnManagerService(manager_id);
+  if(serviceResponse.success === true){
+    sendCustomSuccess(res, serviceResponse.data);
+  }
+  else{
+    sendInternalServerError(res);
+  }
+}
+
+export const getProjectsBasedOnId = async (req, res) => {
+  const {p_id} = req.params;
+  const serviceResponse = await getProjectsBasedOnIdService(p_id);
   if(serviceResponse.success === true){
     sendCustomSuccess(res, serviceResponse.data);
   }

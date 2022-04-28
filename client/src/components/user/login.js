@@ -51,6 +51,7 @@ export default function Login() {
     })
     if(response.status === 200){
       setUser(response.data.payload);
+      updateLocalStorage(response.data.payload);
       setAuthState(true)
       setTimeout(()=>{
         history(location.state ? location.state.from.pathname : '/Dashboard');

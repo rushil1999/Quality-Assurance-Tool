@@ -74,3 +74,22 @@ export const getProjectsBasedOnManagerService = async (manager_id) =>{
     }
   }
 }
+
+export const getProjectsBasedOnIdService = async (p_id) =>{ 
+  const getProjectsBasedOnId = `SELECT * FROM Project WHERE p_id = ${p_id}`;
+  try{
+    const response = await  connection.query(getProjectsBasedOnId);
+    const parsedResponse = parseRowDataPacket(response);
+    return{
+      success: true,
+      data: parsedResponse
+    }
+  }
+  catch(e){
+    console.log(e);
+    return{
+      success: false,
+      message: e.message
+    }
+  }
+}
