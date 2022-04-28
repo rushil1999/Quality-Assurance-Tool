@@ -8,7 +8,7 @@ export const fetchComponentListOfProjectService = async(project_id) => {
   const response = await fetch(`${BACKEND_URL}:${BACKEND_PORT}/component/project/${project_id}`, options);
   const status = response.status;
   const data = await response.json();
-  console.log('Component Service ', data);
+  console.log('Component Service ', data, status);
   return { status, data };
 }
 

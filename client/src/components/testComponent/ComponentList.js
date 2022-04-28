@@ -14,43 +14,53 @@ import CardContent from '@mui/material/CardContent';
 import { CardHeader } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
+import Alert from '@mui/material/Alert';
 
 
 const ComponentList = (props) => {
   let id;
-  const {source} = props;
+  const { source } = props;
   const params = useParams();
-  if(source === 'testlead'){
+  if (source === 'testlead') {
     const { testlead_id } = params;
     id = testlead_id;
 
   }
-  else{
+  else {
     const { project_id } = params;
     id = project_id;
   }
   id = parseInt(id);
 
-  console.log(params,id);
+  console.log(params, id);
   const [componentListState, setComponentListState] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState(false);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
 
   const navigate = useNavigate();
 
   const fetchComponentListOfProject = async () => {
     const serviceResponse = await fetchComponentListOfProjectService(id);
-    console.log(serviceResponse.data.payload);
+    console.log(serviceResponse.data);
     if (serviceResponse.status === 200) {
       setComponentListState(serviceResponse.data.payload);
-      setLoading(false);
     }
-    else {
+    else if(serviceResponse === 500){
       setOpen(true);
       setMessage('Some error occured while fetching data');
     }
+    else{
+      setOpen(true);
+      setMessage(serviceResponse.data.message);
+      setAlertMessage(serviceResponse.data.message);
+      setShowAlert(true);
+    }
+    setLoading(false);
+
   }
   const fetchComponentListOfTestlead = async () => {
     const serviceResponse = await fetchComponentListOfTestleadService(id);
@@ -59,18 +69,26 @@ const ComponentList = (props) => {
       setComponentListState(serviceResponse.data.payload);
       setLoading(false);
     }
-    else {
+    else if(serviceResponse === 500){
       setOpen(true);
       setMessage('Some error occured while fetching data');
     }
+    else{
+      setOpen(true);
+      setMessage(serviceResponse.message);
+      setAlertMessage(serviceResponse.message);
+      setShowAlert(true);
+    }
+    setLoading(false);
+
   }
 
 
   useEffect(() => {
-    if(source === 'testlead'){
+    if (source === 'testlead') {
       fetchComponentListOfTestlead();
     }
-    else{
+    else {
       fetchComponentListOfProject();
     }
   }, []);
@@ -101,12 +119,13 @@ const ComponentList = (props) => {
           <CircularProgress color="success" />
         ) :
         (
+
           <div style={{ margin: 'auto', display: 'flex', justifyContent: 'center' }}>
             <Card sx={{ bgcolor: '#e6ffe6', width: '80%' }} variant="outlined" >
               <CardHeader title="Components" />
 
               <CardContent >
-                {componentListState.map((e) => {
+                {!showAlert ? (componentListState.map((e) => {
                   const { c_id, c_name, c_desc, c_status } = e;
                   return (
                     <div style={{ padding: '15px' }}>
@@ -123,18 +142,22 @@ const ComponentList = (props) => {
                         </AccordionSummary>
                         <AccordionDetails>
                           <Divider></Divider>
-                          <div style={{paddingTop: '25px'}}>
-                            <Typography style={{paddingBottom: '12px'}}>
+                          <div style={{ paddingTop: '25px' }}>
+                            <Typography style={{ paddingBottom: '12px' }}>
                               {c_desc}
                             </Typography>
-                            <Button onClick={redirectToComponents}variant={'contained'}>Test Cases</Button>
+                            <Button onClick={redirectToComponents} variant={'contained'}>Test Cases</Button>
                           </div>
 
                         </AccordionDetails>
                       </Accordion>
                     </div>
                   )
-                })}
+                })) : (
+                  <Alert variant="filled" severity="warning">
+                    {alertMessage}
+                  </Alert>
+                )}
               </CardContent>
             </Card>
           </div>

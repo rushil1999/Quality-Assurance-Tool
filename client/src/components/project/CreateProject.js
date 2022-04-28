@@ -67,7 +67,7 @@ const CreateProject = () => {
 
     setProjectState({
       ...projectState,
-    })
+    });
     if (checkEmptyFields(projectState) === true) {
       const serviceResponse = await addProjectService(projectState);
       if (serviceResponse.status === 200) {
@@ -153,3 +153,4 @@ const CreateProject = () => {
 }
 
 export default CreateProject;
+
