@@ -36,3 +36,17 @@ export const fetchProjectListOfManagerService = async(manager_id) => {
   console.log('Project Service ', data);
   return { status, data };
 }
+
+
+
+export const getTotalProjectCountService = async () => {
+  const options = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  }
+  const response = await fetch(`${BACKEND_URL}:${BACKEND_PORT}/project/count`, options);
+  const status = response.status;
+  const data = await response.json();
+  console.log('Project Service ', data);
+  return { status, data };
+}

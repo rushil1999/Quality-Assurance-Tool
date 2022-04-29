@@ -16,6 +16,7 @@ import NavBar from './Navbar';
 import PrivateRoute from './authentication/PrivateAuth';
 import ProjectList from './project/ProjectList';
 import ComponentList from './testComponent/ComponentList';
+import Dashboard from './Dashboard';
 // import AdminAnalysis from './integration/AdminAnalysis';
 // import { BACKEND_URL } from '../services/constants';
 // import { BACKEND_PORT } from '../services/constants';
@@ -76,9 +77,9 @@ const Main = () => {
                         <NavBar />
                         <Router>
                             <Routes>
-                                {/* <Route path="/"
-                            element = {<NavBar/>}
-                        />                             */}
+                                <Route path="/Dashboard"
+                                    element = {<Dashboard/>}
+                                />                            
                                 <Route path="/login"
                                     element={<Login />}
                                 />

@@ -86,3 +86,23 @@ export const getComponentsBasedOnTestLeadService = async (testlead_id) => {
     }
   }
 }
+
+export const getTotalComponentCountService = async() => {
+  const getTotalComponentCountQuery = 'SELECT COUNT(*) AS COUNT FROM Component';
+  try{
+    const response = await connection.query(getTotalComponentCountQuery);
+    const parsedResponse = parseRowDataPacket(response);
+    return{
+      success: true,
+      data: parsedResponse
+    }
+  } 
+  catch(e){
+    console.log(e);
+    return{
+      success: false,
+      message: e.message
+    }
+  }
+}
+

@@ -103,3 +103,23 @@ export const getTestCasesBasedOnTesterService = async (tester_id) => {
     }
   }
 }
+
+
+export const getTotalTestCaseCountService = async() => {
+  const getTotalTestCaseCountQuery = 'SELECT COUNT(*) AS COUNT FROM TestCase';
+  try{
+    const response = await connection.query(getTotalTestCaseCountQuery);
+    const parsedResponse = parseRowDataPacket(response);
+    return{
+      success: true,
+      data: parsedResponse
+    }
+  } 
+  catch(e){
+    console.log(e);
+    return{
+      success: false,
+      message: e.message
+    }
+  }
+}

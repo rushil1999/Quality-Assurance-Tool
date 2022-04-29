@@ -1,4 +1,4 @@
-import { addTestCaseService, getTestCasesBasedOnComponentService, getTestCasesBasedOnTesterService } from "../services/testCaseService.js";
+import { addTestCaseService, getTestCasesBasedOnComponentService, getTestCasesBasedOnTesterService, getTotalTestCaseCountService } from "../services/testCaseService.js";
 import { sendInternalServerError, sendCustomError, sendCustomSuccess } from "./common.js";
 export const addTestCase = async (req, res) => {
     const serviceResponse = await addTestCaseService(req.body);
@@ -31,6 +31,16 @@ export const getTestCasesBasedOnTester = async (req, res) => {
     }
 }
 
+export const getTotalTestCaseCount = async (req, res) => {
+    const serviceResponse = await getTotalTestCaseCountService();
+    if(serviceResponse.success === true){
+      sendCustomSuccess(res, serviceResponse.data);
+    }
+    else{
+      sendInternalServerError(res);
+    }
+  }
+  
 // export const getComponentsBasedOnProject = (req, res) => {
 //   console.log(req);
 //   const {project_id} = req.params;

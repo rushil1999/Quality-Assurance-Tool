@@ -24,3 +24,14 @@ export const fetchComponentListOfTestleadService = async(testlead_id) => {
   console.log('Component Service ', data);
   return { status, data };
 }
+
+export const getTotalComponentCountService = async () => {
+  const options = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  }
+  const response = await fetch(`${BACKEND_URL}:${BACKEND_PORT}/component/count`, options);
+  const status = response.status;
+  const data = await response.json();
+  return { status, data };
+}

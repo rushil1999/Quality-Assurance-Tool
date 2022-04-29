@@ -1,5 +1,5 @@
 import { connection} from "../index.js";
-import { addComponentService, getComponentsBasedOnTestLeadService } from "../services/componentService.js";
+import { addComponentService, getComponentsBasedOnTestLeadService, getTotalComponentCountService } from "../services/componentService.js";
 import { parseRowDataPacket } from "../services/parsingService.js";
 import { sendInternalServerError, sendCustomError, sendCustomSuccess } from "./common.js";
 
@@ -71,6 +71,16 @@ export const getComponentsBasedOnProject = (req, res) => {
         sendInternalServerError(res);
     }
   });
+}
+
+export const getTotalComponentCount = async (req, res) => {
+  const serviceResponse = await getTotalComponentCountService();
+  if(serviceResponse.success === true){
+    sendCustomSuccess(res, serviceResponse.data);
+  }
+  else{
+    sendInternalServerError(res);
+  }
 }
 
 // export const addComponent = (req, res) => {

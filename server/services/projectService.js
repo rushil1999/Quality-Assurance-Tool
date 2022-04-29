@@ -93,3 +93,24 @@ export const getProjectsBasedOnIdService = async (p_id) =>{
     }
   }
 }
+
+
+export const getTotalProjectsCountService = async () => {
+  const getTotalProjectsCountQuery =   `SELECT COUNT(*) AS COUNT FROM Project`;
+  try{
+    const response = await connection.query(getTotalProjectsCountQuery);
+    const parsedResponse = parseRowDataPacket(response);
+    return {
+      success: true,
+      data: parsedResponse
+    };
+  }
+  catch(e){
+    console.log(e);
+    return{
+      success: false,
+      message: e.message 
+    
+    }
+  }
+}
