@@ -63,7 +63,7 @@ export const getComponentsBasedOnTestLead = async(req, res) => {
 // }
 
 export const getComponentsBasedOnProject = (req, res) => {
-  console.log(req);
+  // console.log(req);
   const {project_id} = req.params;
   const getComponentsBasedOnProject=  `SELECT * FROM Component WHERE project_id = ?`;
   const getProjectBasedOnId = `SELECT * FROM Project WHERE p_id = ?`
