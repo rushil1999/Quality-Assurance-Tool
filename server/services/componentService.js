@@ -63,6 +63,25 @@ export const addComponentService = async (component) => {
   }
 }
 
+export const getComponentBasedOnIdService = async (c_id) =>{ 
+  const getComponentBasedOnId = `SELECT * FROM Component WHERE c_id = ${c_id}`;
+  try{
+    const response = await  connection.query(getComponentBasedOnId);
+    const parsedResponse = parseRowDataPacket(response);
+    return{
+      success: true,
+      data: parsedResponse
+    }
+  }
+  catch(e){
+    console.log(e);
+    return{
+      success: false,
+      message: e.message
+    }
+  }
+}
+
 export const getComponentsBasedOnTestLeadService = async (testlead_id) => {
   console.log(testlead_id);
   const getComponentsBasedOnTestLead=  `SELECT * FROM Component WHERE testlead_id = ${testlead_id}`;

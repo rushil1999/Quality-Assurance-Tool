@@ -1,10 +1,10 @@
 import express from "express";
-import { addProject, getProjectsBasedOnId, getProjectsBasedOnManager, getTotalProjectCount } from "../controllers/projectController.js";
+import { addProject, getProjectBasedOnId, getProjectsBasedOnManager, getTotalProjectCount } from "../controllers/projectController.js";
 const router = express.Router();
 
 router.post('/new', addProject);
 router.get('/manager/:manager_id', getProjectsBasedOnManager);
-router.get('/details/:p_id', getProjectsBasedOnId);
+router.get('/details/:p_id', getProjectBasedOnId);
 router.get('/count', getTotalProjectCount);
 
 

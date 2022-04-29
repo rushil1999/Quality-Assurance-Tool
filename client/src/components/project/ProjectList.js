@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import Snackbar from '@mui/material/Snackbar';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { CardHeader } from '@mui/material';
+import { CardHeader, Stack } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 
@@ -58,6 +58,10 @@ const ProjectList = () => {
     navigate(`/component_list/project/${project_id}`)
   }
 
+  const redirectToProjectForm = (p_id) => {
+    navigate(`/project/${p_id}`);
+  }
+
   return (
     <>
       <Snackbar
@@ -97,9 +101,14 @@ const ProjectList = () => {
                             <Typography style={{paddingBottom: '12px'}}>
                               {p_desc}
                             </Typography>
-                            <Button onClick={() => redirectToComponents(p_id)}variant={'contained'}>Components</Button>
                           </div>
+                          <div style={{ display: 'flex', justifyContent: 'center' }}>
+                              <Stack direction="row" spacing={2}>
+                                <Button variant={'contained'} color={'secondary'} onClick={() => {redirectToProjectForm(p_id)}}>Update Project</Button>
+                                <Button onClick={redirectToComponents} variant={'contained'}>Test Cases</Button>
+                              </Stack>
 
+                            </div>
                         </AccordionDetails>
                       </Accordion>
                     </div>

@@ -13,8 +13,10 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import { CardHeader } from '@mui/material';
 import Button from '@mui/material/Button';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
+import Stack from '@mui/material/Stack';
+
 
 
 const ComponentList = (props) => {
@@ -49,11 +51,11 @@ const ComponentList = (props) => {
     if (serviceResponse.status === 200) {
       setComponentListState(serviceResponse.data.payload);
     }
-    else if(serviceResponse === 500){
+    else if (serviceResponse === 500) {
       setOpen(true);
       setMessage('Some error occured while fetching data');
     }
-    else{
+    else {
       setOpen(true);
       setMessage(serviceResponse.data.message);
       setAlertMessage(serviceResponse.data.message);
@@ -69,11 +71,11 @@ const ComponentList = (props) => {
       setComponentListState(serviceResponse.data.payload);
       setLoading(false);
     }
-    else if(serviceResponse === 500){
+    else if (serviceResponse === 500) {
       setOpen(true);
       setMessage('Some error occured while fetching data');
     }
-    else{
+    else {
       setOpen(true);
       setMessage(serviceResponse.message);
       setAlertMessage(serviceResponse.message);
@@ -102,8 +104,22 @@ const ComponentList = (props) => {
     setOpen(false);
   }
 
-  const redirectToComponents = () => {
+  const redirectToTestCases = () => {
     navigate('/testcase_list/component/:component_id')
+  }
+
+  const redirectToComponentForm = (c_id) => {
+    navigate(`/component/${c_id}`, { replace: true, state: { p_id: id } });
+  }
+
+  const redirectToAddComponentForm = () => {
+    console.log('Clicked', id);
+    // return(<Navigate
+    //   to={`/component/new`}
+    //   replace={true}
+    //   state={{ project_id: params.id }}
+    // />)
+    navigate("/component/new", { replace: true, state: { p_id: id } });
   }
 
   return (
@@ -119,48 +135,64 @@ const ComponentList = (props) => {
           <CircularProgress color="success" />
         ) :
         (
+          <React.Fragment>
+            {source === 'project' && (<Button
+              style={{ marginBottom: "15px" }}
+              onClick={redirectToAddComponentForm}
+              variant={'contained'}
+              color={'secondary'}
+            >
+              Add Component
+            </Button>)
+            }
+            <div style={{ margin: 'auto', display: 'flex', justifyContent: 'center' }}>
+              <Card sx={{ bgcolor: '#e6ffe6', width: '80%' }} variant="outlined" >
+                <CardHeader title="Components" />
 
-          <div style={{ margin: 'auto', display: 'flex', justifyContent: 'center' }}>
-            <Card sx={{ bgcolor: '#e6ffe6', width: '80%' }} variant="outlined" >
-              <CardHeader title="Components" />
-
-              <CardContent >
-                {!showAlert ? (componentListState.map((e) => {
-                  const { c_id, c_name, c_desc, c_status } = e;
-                  return (
-                    <div style={{ padding: '15px' }}>
-                      <Accordion expanded={expanded === c_id} onChange={handleChange(c_id)}>
-                        <AccordionSummary
-                          expandIcon={<ExpandMoreIcon />}
-                          aria-controls="panel1bh-content"
-                          id="panel1bh-header"
-                        >
-                          <Typography sx={{ width: '10%', flexShrink: 0 }}>
-                            {c_name}
-                          </Typography>
-                          {/* <Typography sx={{ color: 'text.secondary' }}>I am an accordion</Typography> */}
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <Divider></Divider>
-                          <div style={{ paddingTop: '25px' }}>
-                            <Typography style={{ paddingBottom: '12px' }}>
-                              {c_desc}
+                <CardContent >
+                  {showAlert ? (
+                    <Alert variant="filled" severity="warning">
+                      {alertMessage}
+                    </Alert>
+                  ) : (componentListState.map((e) => {
+                    const { c_id, c_name, c_desc, c_status } = e;
+                    return (
+                      <div style={{ padding: '15px' }}>
+                        <Accordion expanded={expanded === c_id} onChange={handleChange(c_id)}>
+                          <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1bh-content"
+                            id="panel1bh-header"
+                          >
+                            <Typography sx={{ width: '10%', flexShrink: 0 }}>
+                              {c_name}
                             </Typography>
-                            <Button onClick={redirectToComponents} variant={'contained'}>Test Cases</Button>
-                          </div>
+                            {/* <Typography sx={{ color: 'text.secondary' }}>I am an accordion</Typography> */}
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <Divider></Divider>
+                            <div style={{ paddingTop: '25px' }}>
+                              <Typography style={{ paddingBottom: '12px' }}>
+                                {c_desc}
+                              </Typography>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                              <Stack direction="row" spacing={2}>
+                                <Button variant={'contained'} color={'secondary'} onClick={() => {redirectToComponentForm(c_id)}}>Update the Component</Button>
+                                <Button onClick={redirectToTestCases} variant={'contained'}>Test Cases</Button>
+                              </Stack>
 
-                        </AccordionDetails>
-                      </Accordion>
-                    </div>
-                  )
-                })) : (
-                  <Alert variant="filled" severity="warning">
-                    {alertMessage}
-                  </Alert>
-                )}
-              </CardContent>
-            </Card>
-          </div>
+                            </div>
+
+                          </AccordionDetails> 
+                        </Accordion>
+                      </div>
+                    )
+                  }))}
+                </CardContent>
+              </Card>
+            </div>
+          </React.Fragment>
 
         )
 

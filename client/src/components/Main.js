@@ -17,6 +17,7 @@ import PrivateRoute from './authentication/PrivateAuth';
 import ProjectList from './project/ProjectList';
 import ComponentList from './testComponent/ComponentList';
 import Dashboard from './Dashboard';
+import CreateComponent from './testComponent/CreateComponent';
 // import AdminAnalysis from './integration/AdminAnalysis';
 // import { BACKEND_URL } from '../services/constants';
 // import { BACKEND_PORT } from '../services/constants';
@@ -94,6 +95,11 @@ const Main = () => {
                                 <Route path="project_list/manager/:manager_id"
                                     element={<PrivateRoute path="project_list/manager/:manager_id"
                                         element={<ProjectList />}
+                                    />}
+                                />
+                                <Route path="component/:id"
+                                    element={<PrivateRoute path="component/:id"
+                                        element={<CreateComponent />}
                                     />}
                                 />
 
