@@ -16,6 +16,14 @@ import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import { useLocation } from 'react-router-dom';
 import { getNextStatus } from '../../services/testCaseService';
+import Drawer from '@mui/material/Drawer';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import { getDeveloperListService } from '../../services/developerService';
+import { addBugService } from '../../services/bugService';
 
 const CreateTestCase = () => {
   const [testCaseState, setTestCaseState] = useState({});
@@ -24,10 +32,30 @@ const CreateTestCase = () => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState({});
+  const [drawerState, setDrawerState] = useState(false);
+  const [developerState, setDeveloperState] = useState();
+  const [originalStatus, setOriginalStatus] = useState();
+  const [developerListState, setDeveloperListState] = useState([]);
+  const [drawerLoading, setDrawerLoadingState] = useState(true);
+
   const navigate = useNavigate();
   const location = useLocation();
   const contextValue = useContext(AuthContext);
-  const {state} = location;
+  const { state } = location;
+
+  const fetchDeveloperList = async () => {
+    setDrawerLoadingState(true);
+    const serviceResponse = await getDeveloperListService();
+    if (serviceResponse.status === 200) {
+      console.log(serviceResponse);
+      setDeveloperListState(serviceResponse.data.payload);
+    }
+    else {
+      setOpen(true);
+      setMessage('Some error Occures');
+    }
+    setDrawerLoadingState(false);
+  }
 
 
   const fetchComponentDetails = async (id) => {
@@ -35,6 +63,7 @@ const CreateTestCase = () => {
     const serviceResponse = await fetchTestCaseDetailsService(id);
     if (serviceResponse.status === 200) {
       setTestCaseState(serviceResponse.data.payload[0]);
+      setOriginalStatus(serviceResponse.data.payload[0]['tc_status']);
       setStatus({
         ...status,
         current: serviceResponse.data.payload[0]['tc_status'],
@@ -51,7 +80,6 @@ const CreateTestCase = () => {
 
   useEffect(() => {
     const { e_id: tester_id } = contextValue.user;
-    console.log(tester_id);
     setTestCaseState({
       ...testCaseState,
       tester_id
@@ -64,7 +92,7 @@ const CreateTestCase = () => {
         ...testCaseState,
         tc_status: 'ToDo'
       })
-      
+
       setLoading(false);
     }
   }, [])
@@ -78,8 +106,7 @@ const CreateTestCase = () => {
   }
 
   const handleSubmit = async () => {
-    console.log(testCaseState);
-    
+
     if (checkEmptyFields(testCaseState) === true) {
       const serviceResponse = await addTestCaseService(testCaseState);
       if (serviceResponse.status === 200) {
@@ -99,13 +126,16 @@ const CreateTestCase = () => {
     }
   }
 
+  const handleDeveloperListChange = (event) => {
+    setDeveloperState(event.target.value);
+  };
+
 
   const handleStatusChange = (selected, current) => {
-    console.log('Status selected', selected, current, status);
     setStatus({
       ...status,
       current,
-      new: [].concat(status.current) ,
+      new: [].concat(status.current),
       selected,
     })
     setTestCaseState({
@@ -117,6 +147,41 @@ const CreateTestCase = () => {
   const handleClose = () => {
     setOpen(false);
   }
+
+  const toggleDrawer = (toggle) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+    fetchDeveloperList();
+    setDrawerState(toggle);
+  };
+
+  const submitBug = async () => {
+    const { e_id: tester_id } = contextValue.user;
+    const bug = {
+      b_status: 'ToDo',
+      created_by: parseInt(tester_id),
+      resolved_by: parseInt(developerState),
+      testcase_id: testCaseState.tc_id
+    };
+    const serviceResponse = await addBugService(bug); 
+    if(serviceResponse.status ===200){
+      setOpen(true);
+      setMessage('Operation Successfull');
+      setDrawerState(false);
+      setTestCaseState({
+        ...testCaseState,
+        tc_status: 'Blocked'
+      });
+      handleSubmit();
+    }
+    else{
+      setOpen(true);
+      setMessage('Error Occured');
+      setDrawerState(false);
+    }
+  }
+
   return (
     <React.Fragment>
       <Snackbar
@@ -136,7 +201,7 @@ const CreateTestCase = () => {
               <CardHeader title="Component Details">
               </CardHeader>
               <CardContent>
-                <div style={{display: 'flex', justifyContent: 'center'}}>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
                   <h2>Component ID: {state.c_id}</h2>
                 </div>
                 <TextField
@@ -164,33 +229,78 @@ const CreateTestCase = () => {
                 <br></br>
                 <br></br>
                 <div>
-                  <Chip 
-                    color={testCaseState.c_status === 'TestReady'  ? 'warning' : 'success' } 
-                    label={params.id === 'new' ? 'TestReady' : status.selected }/>
+                  <Chip
+                    color={testCaseState.c_status === 'TestReady' ? 'warning' : 'success'}
+                    label={params.id === 'new' ? 'TestReady' : status.selected} />
                 </div>
               </CardContent>
-              <CardActions style={{ justifyContent: 'center' }}>
-              <Stack direction="row" spacing={2}>
-                {params.id !== 'new' && (
+              <CardActions  >
+                <div style={{ justifyContent: 'center' }} >
+                  <Stack direction="row" spacing={2}>
+                    {params.id !== 'new' && (
+                      <>
+                        {status.new && status.new.length > 0 && status.new.map((e) => {
+                          return (<Button variant={'contained'} onClick={() => { handleStatusChange(e, status.new) }}>{e}</Button>)
+                        })}
+                      </>
+                    )}
+                    <Button variant={'contained'} onClick={handleSubmit}>Submit</Button>
+                  </Stack>
+                </div>
+                {(originalStatus === 'Failed') && (
                   <>
-                  {status.new && status.new.length > 0 && status.new.map((e) => {
-                    console.log(e)
-                      return(<Button variant={'contained'} onClick={() => {handleStatusChange(e, status.new)}}>{e}</Button>)
-                  })}
+                    <div>
+                      This test case is Failed
+                    </div>
+                    <Button variant={'contained'} onClick={toggleDrawer(true)}>
+                      Report Bug
+                    </Button>
                   </>
                 )}
-                <Button variant={'contained'} onClick={handleSubmit}>Submit</Button>
-              </Stack>
+
               </CardActions>
             </Card>
           </div>
+          <Button style={{ marginTop: '15px' }} variant={'contained'} onClick={() => { navigate(-1) }}>Go Back</Button>
         </>
 
 
       )}
+      <Drawer
+        anchor={'right'}
+        open={drawerState}
+        onClose={toggleDrawer(false)}
+      >
+        <>
+          {drawerLoading ? (<CircularProgress color="success" />) :
 
+            (
+              <>
+                <Button onClick={toggleDrawer(false)}>Close the Drawer</Button>
+                <FormControl>
+                  <FormLabel id="demo-controlled-radio-buttons-group">Developers</FormLabel>
+                  <RadioGroup
+                    aria-labelledby="demo-controlled-radio-buttons-group"
+                    name="controlled-radio-buttons-group"
+                    value={developerState}
+                    onChange={handleDeveloperListChange}
+                  >
+                    {developerListState.map((dev) => {
+                      return(
+                        <FormControlLabel value={dev.e_id} control={<Radio />} label={dev.firstName} />
+                      )
+                    })}
+                  </RadioGroup>
+                </FormControl>
+                <Button variant={'contained'} onClick={submitBug}>Report Bug</Button>
 
-    </React.Fragment>);
+              </>
+            )}
+
+        </>
+      </Drawer>
+
+    </React.Fragment >);
 }
 
 export default CreateTestCase;

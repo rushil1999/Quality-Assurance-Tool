@@ -143,6 +143,8 @@ const CreateProject = () => {
               </CardActions>
             </Card>
           </div>
+          <Button style={{marginTop: '15px'}}variant={'contained'} onClick={() => {navigate(-1)}}>Go Back</Button>
+
         </>
 
 

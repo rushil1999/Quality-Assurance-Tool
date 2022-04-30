@@ -10,4 +10,22 @@ export const insertDeveloper = async (developer_id) => {
 }
 
 
+export const getDeveloperListService = async () =>{
+    const getDeveloperListQuery = `SELECT * FROM User WHERE type= 'developer'`;
+  try {
+    const result = parseRowDataPacket(await connection.query(getDeveloperListQuery));
+    return {
+      success: true,
+      data: result,
+    }
+  }
+  catch (e) {
+    console.log(e);
+    return {
+      success: false,
+      message: e
+    }
+  }
+}
+
 //Need to update the number of bug resolved....

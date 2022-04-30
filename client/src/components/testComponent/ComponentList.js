@@ -122,6 +122,7 @@ const ComponentList = (props) => {
     navigate("/component/new", { replace: true, state: { p_id: id } });
   }
 
+
   return (
     <>
       <Snackbar
@@ -191,7 +192,9 @@ const ComponentList = (props) => {
                   }))}
                 </CardContent>
               </Card>
+              
             </div>
+            <Button style={{marginTop: '15px'}}variant={'contained'} onClick={() => {navigate(-1)}}>Go Back</Button>
           </React.Fragment>
 
         )

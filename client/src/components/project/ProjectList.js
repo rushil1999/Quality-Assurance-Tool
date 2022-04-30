@@ -75,6 +75,7 @@ const ProjectList = () => {
           <CircularProgress color="success" />
         ) :
         (
+          <React.Fragment>
           <div style={{ margin: 'auto', display: 'flex', justifyContent: 'center' }}>
             <Card sx={{ bgcolor: '#e6ffe6', width: '80%' }} variant="outlined" >
               <CardHeader title="Projects" />
@@ -117,6 +118,8 @@ const ProjectList = () => {
               </CardContent>
             </Card>
           </div>
+          <Button style={{marginTop: '15px'}}variant={'contained'} onClick={() => {navigate(-1)}}>Go Back</Button>
+          </React.Fragment>
 
         )
 

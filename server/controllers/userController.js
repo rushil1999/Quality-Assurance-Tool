@@ -1,6 +1,6 @@
 import pkg1 from 'bcrypt';
 import { connection } from '../index.js';
-import { insertDeveloper } from '../services/developerService.js';
+import { getDeveloperListService, insertDeveloper } from '../services/developerService.js';
 import { insertTester } from '../services/testerService.js';
 import { signUpService, signInService } from '../services/userService.js';
 const { compare, genSalt, hash: _hash } = pkg1;
@@ -29,6 +29,16 @@ export const signIn = async (req, res) => {
     sendInternalServerError(res);
   }
 }
+
+export const getDeveloperList = async(req, res) =>{
+  const serviceResponse = await getDeveloperListService();
+  if(serviceResponse.success === true){
+    sendCustomSuccess(res, serviceResponse.data);
+  }
+  else{
+    sendInternalServerError(res);
+  }
+} 
 
 //The code is v messy..Need to setup transactions for signup feature...
 // export const signUp = async (req, res) => {
