@@ -121,6 +121,25 @@ export const getTestCasesBasedOnTesterService = async (tester_id) => {
   }
 }
 
+export const getTestCaseBasedOnIdService = async (tc_id) =>{ 
+  const getTestCaseBasedOnId = `SELECT * FROM TestCase WHERE tc_id = ${tc_id}`;
+  try{
+    const response = await  connection.query(getTestCaseBasedOnId);
+    const parsedResponse = parseRowDataPacket(response);
+    return{
+      success: true,
+      data: parsedResponse
+    }
+  }
+  catch(e){
+    console.log(e);
+    return{
+      success: false,
+      message: e.message
+    }
+  }
+}
+
 
 export const getTotalTestCaseCountService = async () => {
   const getTotalTestCaseCountQuery = 'SELECT COUNT(*) AS COUNT FROM TestCase';

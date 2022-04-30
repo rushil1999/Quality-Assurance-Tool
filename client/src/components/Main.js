@@ -2,25 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './user/login';
 import Signup from './user/signup';
-// import NavBar from './Navbar.js';
-// import Profile from './user/profile';
-// import Pricing from './user/pricing';
-// import SearchCar from './ride/BookRide';
-// import AddCar from './car/AddCar';
-// import Dashboard from './Dashboard';
+
 import ProvideAuth from './authentication/ProvideAuth';
 import CreateProject from './project/CreateProject';
 import NavBar from './Navbar';
-// import CarList from './car/CarList';
-// import RideList from './ride/RideList';
 import PrivateRoute from './authentication/PrivateAuth';
 import ProjectList from './project/ProjectList';
 import ComponentList from './testComponent/ComponentList';
 import Dashboard from './Dashboard';
 import CreateComponent from './testComponent/CreateComponent';
-// import AdminAnalysis from './integration/AdminAnalysis';
-// import { BACKEND_URL } from '../services/constants';
-// import { BACKEND_PORT } from '../services/constants';
+import TestCaseList from './testCase/TestCaseList';
+import CreateTestCase from './testCase/CreateTestCase';
 
 const Main = () => {
     const [user, setUser] = useState();
@@ -112,6 +104,23 @@ const Main = () => {
                                 <Route path="component_list/testlead/:testlead_id"
                                     element={<PrivateRoute path="component_list/testlead/:testlead_id"
                                         element={<ComponentList source={'testlead'} />}
+                                    />}
+                                />
+                                <Route path="testCase/:id"
+                                    element={<PrivateRoute path="testCase/:id"
+                                        element={<CreateTestCase />}
+                                    />}
+                                />
+
+                                <Route path="testCase_list/component/:component_id"
+                                    element={<PrivateRoute path="testCase_list/component/:component_id"
+                                        element={<TestCaseList source={'component'}/>}
+                                    />}
+                                />
+
+                                <Route path="testCase_list/tester/:tester_id"
+                                    element={<PrivateRoute path="testCase_list/tester/:tester_id"
+                                        element={<TestCaseList source={'tester'} />}
                                     />}
                                 />
 

@@ -105,7 +105,7 @@ const ProjectList = () => {
                           <div style={{ display: 'flex', justifyContent: 'center' }}>
                               <Stack direction="row" spacing={2}>
                                 <Button variant={'contained'} color={'secondary'} onClick={() => {redirectToProjectForm(p_id)}}>Update Project</Button>
-                                <Button onClick={redirectToComponents} variant={'contained'}>Test Cases</Button>
+                                <Button onClick={() => {redirectToComponents(p_id)}} variant={'contained'}>Components</Button>
                               </Stack>
 
                             </div>

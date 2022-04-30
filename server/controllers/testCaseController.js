@@ -1,4 +1,4 @@
-import { addTestCaseService, getTestCasesBasedOnComponentService, getTestCasesBasedOnTesterService, getTotalTestCaseCountService } from "../services/testCaseService.js";
+import { addTestCaseService, getTestCasesBasedOnComponentService, getTestCasesBasedOnTesterService, getTotalTestCaseCountService, getTestCaseBasedOnIdService } from "../services/testCaseService.js";
 import { sendInternalServerError, sendCustomError, sendCustomSuccess } from "./common.js";
 export const addTestCase = async (req, res) => {
     const serviceResponse = await addTestCaseService(req.body);
@@ -30,6 +30,17 @@ export const getTestCasesBasedOnTester = async (req, res) => {
         sendInternalServerError(res);
     }
 }
+
+export const getTestCaseBasedOnId = async (req, res) => {
+    const {tc_id} = req.params;
+    const serviceResponse = await getTestCaseBasedOnIdService(tc_id);
+    if(serviceResponse.success === true){
+      sendCustomSuccess(res, serviceResponse.data);
+    }
+    else{
+      sendInternalServerError(res);
+    }
+  }
 
 export const getTotalTestCaseCount = async (req, res) => {
     const serviceResponse = await getTotalTestCaseCountService();
