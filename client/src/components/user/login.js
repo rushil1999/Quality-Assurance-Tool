@@ -73,7 +73,7 @@ export default function Login() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(https://innovationatwork.ieee.org/wp-content/uploads/2018/07/iStock-829197466-1024x683.jpg)',
+            backgroundImage: 'url(https://www.rue-web.com/wp-content/uploads/2021/12/QA-tester.jpg)',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
