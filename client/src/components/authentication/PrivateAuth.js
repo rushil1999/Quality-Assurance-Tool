@@ -5,7 +5,7 @@ import {Route, Navigate, useLocation} from 'react-router-dom';
 
 const PrivateRoute = ({ path, element}) => {
     const contextValue = useContext(AuthContext);
-    console.log(path, contextValue, element);
+    // console.log(path, contextValue, element);
     const location = useLocation();
     if(contextValue.isAuthenticated){
       return element;

@@ -17,7 +17,7 @@ const NavBar = () => {
   // }
   const contextValue = useContext(AuthContext);
   const { isAuthenticated, logout } = contextValue;
-  console.log(contextValue);
+  // console.log(contextValue);
   return (
     <div style={{ marginBottom: '20px' }}>
       <AppBar position="static">

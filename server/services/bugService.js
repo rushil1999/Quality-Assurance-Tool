@@ -113,6 +113,7 @@ export const getTotalBugs = async () => {
 }
 
 
+
 // export const insertBug = async (obj) => {
 //   try{
 //     const {b_id, testcase_id, b_status, created_by, resolved_by} = obj;

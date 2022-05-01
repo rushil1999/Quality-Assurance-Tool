@@ -4,7 +4,7 @@ import React, {useState, useEffect, createContext} from 'react';
 export const AuthContext =  createContext();
 
 const ProvideAuth = props => {
-    console.log('Called', props);
+    // console.log('Called', props);
     const [user, setUser] = useState(props.value.user);
     const [authState, setAuthState] = useState(props.value.authState);
     // const [token, setToken] = useState(props.value.token);
