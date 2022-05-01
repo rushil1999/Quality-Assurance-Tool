@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
 import Accordion from '@mui/material/Accordion';
@@ -16,6 +16,7 @@ import Button from '@mui/material/Button';
 import { useNavigate, Navigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
+import { AuthContext } from '../authentication/ProvideAuth';
 
 
 
@@ -44,6 +45,8 @@ const ComponentList = (props) => {
   const [showAlert, setShowAlert] = useState(false);
 
   const navigate = useNavigate();
+
+  const contextValue = useContext(AuthContext);
 
   const fetchComponentListOfProject = async () => {
     const serviceResponse = await fetchComponentListOfProjectService(id);
@@ -137,7 +140,7 @@ const ComponentList = (props) => {
         ) :
         (
           <React.Fragment>
-            {source === 'project' && (<Button
+            {source === 'project' && contextValue.user.type === 'testlead' && (<Button
               style={{ marginBottom: "15px" }}
               onClick={redirectToAddComponentForm}
               variant={'contained'}
@@ -179,7 +182,7 @@ const ComponentList = (props) => {
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'center' }}>
                               <Stack direction="row" spacing={2}>
-                                <Button variant={'contained'} color={'secondary'} onClick={() => {redirectToComponentForm(c_id)}}>Update the Component</Button>
+                                {contextValue.user.type ==='testlead' && (<Button variant={'contained'} color={'secondary'} onClick={() => {redirectToComponentForm(c_id)}}>Update the Component</Button>)}
                                 <Button onClick={() => {redirectToTestCases(c_id)}} variant={'contained'}>Test Cases</Button>
                               </Stack>
 

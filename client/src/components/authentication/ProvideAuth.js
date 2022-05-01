@@ -1,4 +1,5 @@
 import React, {useState, useEffect, createContext} from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 
 export const AuthContext =  createContext();
@@ -36,6 +37,7 @@ const ProvideAuth = props => {
     const logout = () => {
         window.localStorage.removeItem('user');
         setAuthState(false);
+        // navigate('/login');
     }
 
     useEffect(()=>{

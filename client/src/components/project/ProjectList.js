@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
 import Accordion from '@mui/material/Accordion';
@@ -14,6 +14,7 @@ import CardContent from '@mui/material/CardContent';
 import { CardHeader, Stack } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../authentication/ProvideAuth';
 
 
 const ProjectList = () => {
@@ -26,6 +27,7 @@ const ProjectList = () => {
 
   const navigate = useNavigate();
 
+  const contextValue = useContext(AuthContext);
   const fetchProjectListOfManager = async () => {
     const serviceResponse = await fetchProjectListOfManagerService(manager_id);
     console.log(serviceResponse.data.payload);
@@ -76,13 +78,22 @@ const ProjectList = () => {
         ) :
         (
           <React.Fragment>
+            {contextValue.user.type === 'manager'&& (<Button
+              style={{ marginBottom: "15px" }}
+              onClick={() => redirectToProjectForm('new')}
+              variant={'contained'}
+              color={'secondary'}
+            >
+              Add Project
+            </Button>)
+            }
           <div style={{ margin: 'auto', display: 'flex', justifyContent: 'center' }}>
             <Card sx={{ bgcolor: '#e6ffe6', width: '80%' }} variant="outlined" >
               <CardHeader title="Projects" />
 
               <CardContent >
                 {projectListState.map((e) => {
-                  const { p_id, p_name, p_desc } = e;
+                  const { p_id, p_name, p_desc, TestReady: testReady, Completed: completed } = e;
                   return (
                     <div style={{ padding: '15px' }}>
                       <Accordion expanded={expanded === p_id} onChange={handleChange(p_id)}>
@@ -103,9 +114,19 @@ const ProjectList = () => {
                               {p_desc}
                             </Typography>
                           </div>
+                          <div style={{display: 'flex', justifyContent: 'center'}}>
+                            <Stack direction="row" spacing={2}>
+                              <Typography style={{paddingBottom: '12px'}}>
+                                <strong>Test Ready</strong>: {testReady}
+                              </Typography>
+                              <Typography style={{paddingBottom: '12px'}}>
+                                <strong>Completed</strong>: {completed}
+                              </Typography>
+                            </Stack>
+                          </div>
                           <div style={{ display: 'flex', justifyContent: 'center' }}>
                               <Stack direction="row" spacing={2}>
-                                <Button variant={'contained'} color={'secondary'} onClick={() => {redirectToProjectForm(p_id)}}>Update Project</Button>
+                                {contextValue.user.type === 'manager' && (<Button variant={'contained'} color={'secondary'} onClick={() => {redirectToProjectForm(p_id)}}>Update Project</Button>)}
                                 <Button onClick={() => {redirectToComponents(p_id)}} variant={'contained'}>Components</Button>
                               </Stack>
 

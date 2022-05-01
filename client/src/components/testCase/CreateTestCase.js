@@ -24,6 +24,7 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { getDeveloperListService } from '../../services/developerService';
 import { addBugService } from '../../services/bugService';
+import Box from '@mui/material/Box';
 
 const CreateTestCase = () => {
   const [testCaseState, setTestCaseState] = useState({});
@@ -42,7 +43,7 @@ const CreateTestCase = () => {
   const location = useLocation();
   const contextValue = useContext(AuthContext);
   const { state } = location;
-
+  console.log(state);
   const fetchDeveloperList = async () => {
     setDrawerLoadingState(true);
     const serviceResponse = await getDeveloperListService();
@@ -164,8 +165,8 @@ const CreateTestCase = () => {
       resolved_by: parseInt(developerState),
       testcase_id: testCaseState.tc_id
     };
-    const serviceResponse = await addBugService(bug); 
-    if(serviceResponse.status ===200){
+    const serviceResponse = await addBugService(bug);
+    if (serviceResponse.status === 200) {
       setOpen(true);
       setMessage('Operation Successfull');
       setDrawerState(false);
@@ -175,7 +176,7 @@ const CreateTestCase = () => {
       });
       handleSubmit();
     }
-    else{
+    else {
       setOpen(true);
       setMessage('Error Occured');
       setDrawerState(false);
@@ -198,7 +199,7 @@ const CreateTestCase = () => {
         <>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <Card variant="outlined" sx={{ bgcolor: '#ffffe6', width: '80%' }}>
-              <CardHeader title="Component Details">
+              <CardHeader title="Test Case Details">
               </CardHeader>
               <CardContent>
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -234,29 +235,32 @@ const CreateTestCase = () => {
                     label={params.id === 'new' ? 'TestReady' : status.selected} />
                 </div>
               </CardContent>
-              <CardActions  >
-                <div style={{ justifyContent: 'center' }} >
-                  <Stack direction="row" spacing={2}>
-                    {params.id !== 'new' && (
-                      <>
-                        {status.new && status.new.length > 0 && status.new.map((e) => {
-                          return (<Button variant={'contained'} onClick={() => { handleStatusChange(e, status.new) }}>{e}</Button>)
-                        })}
-                      </>
-                    )}
-                    <Button variant={'contained'} onClick={handleSubmit}>Submit</Button>
-                  </Stack>
-                </div>
-                {(originalStatus === 'Failed') && (
-                  <>
-                    <div>
-                      This test case is Failed
-                    </div>
-                    <Button variant={'contained'} onClick={toggleDrawer(true)}>
-                      Report Bug
-                    </Button>
-                  </>
-                )}
+              <CardActions style={{ display: 'flex', justifyContent: 'center' }} >
+                <Stack>
+                  <div>
+                    <Stack direction="row" spacing={2}>
+                      {params.id !== 'new' && (
+                        <>
+                          {status.new && status.new.length > 0 && status.new.map((e) => {
+                            return (<Button variant={'contained'} onClick={() => { handleStatusChange(e, status.new) }}>{e}</Button>)
+                          })}
+                        </>
+                      )}
+                      <Button variant={'contained'} onClick={handleSubmit}>Submit</Button>
+                    </Stack>
+                  </div>
+                  <br></br>
+                  {(originalStatus === 'Failed') && (
+                    <>
+                      <div>
+                        This test case is Failed
+                      </div>
+                      <Button variant={'contained'} onClick={toggleDrawer(true)}>
+                        Report Bug
+                      </Button>
+                    </>
+                  )}
+                </Stack>
 
               </CardActions>
             </Card>
@@ -276,8 +280,16 @@ const CreateTestCase = () => {
 
             (
               <>
-                <Button onClick={toggleDrawer(false)}>Close the Drawer</Button>
-                <FormControl>
+                <Box
+                  sx={{ width: 300 }}
+                  role="presentation"
+                  // onClick={toggleDrawer(false)}
+                  // onKeyDown={toggleDrawer(false)}
+                >
+                <Stack>
+                <Button onClick={toggleDrawer(false)} variant={'outlined'}>Close the Drawer</Button>
+                <br></br>
+                <FormControl style={{paddingLeft: '20px'}}>
                   <FormLabel id="demo-controlled-radio-buttons-group">Developers</FormLabel>
                   <RadioGroup
                     aria-labelledby="demo-controlled-radio-buttons-group"
@@ -286,14 +298,15 @@ const CreateTestCase = () => {
                     onChange={handleDeveloperListChange}
                   >
                     {developerListState.map((dev) => {
-                      return(
+                      return (
                         <FormControlLabel value={dev.e_id} control={<Radio />} label={dev.firstName} />
                       )
                     })}
                   </RadioGroup>
                 </FormControl>
                 <Button variant={'contained'} onClick={submitBug}>Report Bug</Button>
-
+                </Stack>
+                </Box>
               </>
             )}
 

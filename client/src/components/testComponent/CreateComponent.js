@@ -126,7 +126,7 @@ const CreateComponent = () => {
               </CardHeader>
               <CardContent>
                 <div style={{display: 'flex', justifyContent: 'center'}}>
-                  <h2>Project ID: {state.p_id}</h2>
+                  <h2>Project ID: {state.p_name}</h2>
 
                 </div>
                 <TextField

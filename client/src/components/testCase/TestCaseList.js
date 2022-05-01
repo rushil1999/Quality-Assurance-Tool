@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
 import Accordion from '@mui/material/Accordion';
@@ -16,6 +16,7 @@ import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
+import { AuthContext } from '../authentication/ProvideAuth';
 
 
 
@@ -44,6 +45,7 @@ const TestCaseList = (props) => {
   const [showAlert, setShowAlert] = useState(false);
 
   const navigate = useNavigate();
+  const contextValue = useContext(AuthContext);
 
   const fetchTestCaseListOfComponent = async () => {
     const serviceResponse = await fetchTestCaseListOfComponentService(id);
@@ -105,19 +107,18 @@ const TestCaseList = (props) => {
   }
 
 
-  const redirectToComponentForm = (c_id) => {
-    navigate(`/testCase/${c_id}`, { replace: true, state: { p_id: id } });
+  const redirectToTestCaseForm = (tc_id) => {
+    navigate(`/testCase/${tc_id}`, { replace: true, state: { c_id: id } });
   }
 
-  const redirectToAddComponentForm = () => {
-    console.log('Clicked', id);
-    // return(<Navigate
-    //   to={`/component/new`}
-    //   replace={true}
-    //   state={{ project_id: params.id }}
-    // />)
-    navigate("/testCase/new", { replace: true, state: { p_id: id } });
-  }
+  // const redirectToAddTestCaseForm = () => {
+  //   // return(<Navigate
+  //   //   to={`/component/new`}
+  //   //   replace={true}
+  //   //   state={{ project_id: params.id }}
+  //   // />)
+  //   navigate("/testCase/new", { replace: true, state: { c_id: id } });
+  // }
 
   return (
     <>
@@ -133,13 +134,13 @@ const TestCaseList = (props) => {
         ) :
         (
           <React.Fragment>
-            {source === 'project' && (<Button
+            {source === 'component' && contextValue.user.type === 'tester' &&(<Button
               style={{ marginBottom: "15px" }}
-              onClick={redirectToAddComponentForm}
+              onClick={redirectToTestCaseForm}
               variant={'contained'}
               color={'secondary'}
             >
-              Add Component
+              Add Test Case
             </Button>)
             }
             <div style={{ margin: 'auto', display: 'flex', justifyContent: 'center' }}>
@@ -175,7 +176,7 @@ const TestCaseList = (props) => {
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'center' }}>
                               <Stack direction="row" spacing={2}>
-                                <Button variant={'contained'} color={'secondary'} onClick={() => {redirectToComponentForm(tc_id)}}>Update the Component</Button>
+                                {contextValue.user.type === 'tester' && (<Button variant={'contained'} color={'secondary'} onClick={() => {redirectToTestCaseForm(tc_id)}}>Update the Test Case</Button>)}
                               </Stack>
 
                             </div>
@@ -187,8 +188,9 @@ const TestCaseList = (props) => {
                   }))}
                 </CardContent>
               </Card>
-              <Button style={{marginTop: '15px'}}variant={'contained'} onClick={() => {navigate(-1)}}>Go Back</Button>
             </div>
+            <Button style={{marginTop: '15px'}}variant={'contained'} onClick={() => {navigate(-1)}}>Go Back</Button>
+
           </React.Fragment>
 
         )

@@ -43,7 +43,7 @@ export const addBugService = async (bug) => {
       `;
 
       const response = await connection.query(bugAddQuery);
-      getTestCaseByIdQuery = `SELECT * FROM Bug WHERE b_id = ${response.insertId};`;
+      let getBugByIdQuery = `SELECT * FROM Bug WHERE b_id = ${response.insertId};`;
       const insertedObject = await connection.query(getBugByIdQuery);
       const result = parseRowDataPacket(insertedObject);
       return {

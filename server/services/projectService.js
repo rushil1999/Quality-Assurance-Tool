@@ -57,7 +57,80 @@ export const addProjectService = async (project) => {
 
 
 export const getProjectsBasedOnManagerService = async (manager_id) =>{ 
-  const getProjectsBasedOnManager = `SELECT * FROM Project WHERE manager_id = ${manager_id}`;
+  const getProjectsBasedOnManager = `select Project.p_id,Project.p_name,Project.p_desc,Project.manager_id,project_status_table.TestReady,project_status_table.Completed
+  from(
+    select intertable.p_id,COALESCE(intertable.TestReady,0) as TestReady,COALESCE(intertable.Completed,0) as Completed
+    from (    
+      select a1.p_id, TestReady, Completed
+          from (select tab1.p_id as p_id, tab1.cnt as TestReady
+          from ((select p_id,c_status,count(c_id) as cnt
+              from Project Left Join Component on p_id=project_id
+              group by Project.p_id,c_status) )as tab1
+          where tab1.c_status='TestReady' or tab1.c_status is Null)as a1 Left JOIN 
+          (select tab2.p_id as p_id, tab2.cnt as Completed
+          from ((select p_id,c_status,count(c_id) as cnt
+              from Project Left Join Component on p_id=project_id
+              group by Project.p_id,c_status) )as tab2
+          where tab2.c_status='Completed' or tab2.c_status is Null)as a2 on a1.p_id=a2.p_id
+        UNION
+        select a2.p_id, TestReady, Completed
+          from (select tab1.p_id as p_id, tab1.cnt as TestReady
+          from ((select p_id,c_status,count(c_id) as cnt
+              from Project Left Join Component on p_id=project_id
+              group by Project.p_id,c_status) )as tab1
+          where tab1.c_status='TestReady' or tab1.c_status is Null)as a1 RIGHT JOIN 
+          (select tab2.p_id as p_id, tab2.cnt as Completed
+          from ((select p_id,c_status,count(c_id) as cnt
+              from Project Left Join Component on p_id=project_id
+              group by Project.p_id,c_status) )as tab2
+          where tab2.c_status='Completed' or tab2.c_status is Null)as a2 on a1.p_id=a2.p_id) as intertable)as project_status_table, Project
+      where Project.p_id=project_status_table.p_id and manager_id = ${manager_id};`;
+  try{
+    const response = await  connection.query(getProjectsBasedOnManager);
+    const parsedResponse = parseRowDataPacket(response);
+    return{
+      success: true,
+      data: parsedResponse
+    }
+  }
+  catch(e){
+    console.log(e);
+    return{
+      success: false,
+      message: e.message
+    }
+  }
+}
+
+export const getProjectsService = async (manager_id) =>{ 
+  const getProjectsBasedOnManager = `select Project.p_id,Project.p_name,Project.p_desc,Project.manager_id,project_status_table.TestReady,project_status_table.Completed
+  from(
+    select intertable.p_id,COALESCE(intertable.TestReady,0) as TestReady,COALESCE(intertable.Completed,0) as Completed
+    from (    
+      select a1.p_id, TestReady, Completed
+          from (select tab1.p_id as p_id, tab1.cnt as TestReady
+          from ((select p_id,c_status,count(c_id) as cnt
+              from Project Left Join Component on p_id=project_id
+              group by Project.p_id,c_status) )as tab1
+          where tab1.c_status='TestReady' or tab1.c_status is Null)as a1 Left JOIN 
+          (select tab2.p_id as p_id, tab2.cnt as Completed
+          from ((select p_id,c_status,count(c_id) as cnt
+              from Project Left Join Component on p_id=project_id
+              group by Project.p_id,c_status) )as tab2
+          where tab2.c_status='Completed' or tab2.c_status is Null)as a2 on a1.p_id=a2.p_id
+        UNION
+        select a2.p_id, TestReady, Completed
+          from (select tab1.p_id as p_id, tab1.cnt as TestReady
+          from ((select p_id,c_status,count(c_id) as cnt
+              from Project Left Join Component on p_id=project_id
+              group by Project.p_id,c_status) )as tab1
+          where tab1.c_status='TestReady' or tab1.c_status is Null)as a1 RIGHT JOIN 
+          (select tab2.p_id as p_id, tab2.cnt as Completed
+          from ((select p_id,c_status,count(c_id) as cnt
+              from Project Left Join Component on p_id=project_id
+              group by Project.p_id,c_status) )as tab2
+          where tab2.c_status='Completed' or tab2.c_status is Null)as a2 on a1.p_id=a2.p_id) as intertable)as project_status_table, Project
+      where Project.p_id=project_status_table.p_id ;`;
   try{
     const response = await  connection.query(getProjectsBasedOnManager);
     const parsedResponse = parseRowDataPacket(response);
