@@ -17,7 +17,8 @@
     "express": "^4.17.3",
     "moment": "^2.29.3",
     "mysql": "^2.18.1",
-    "mysql-await": "^2.1.8"
+    "mysql-await": "^2.1.8",
+    "winston": "^3.7.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

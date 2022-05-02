@@ -16,6 +16,7 @@ const NavBar = () => {
   //     history('/Dashboard');
   // }
   const contextValue = useContext(AuthContext);
+  const navigate = useNavigate();
   const { isAuthenticated, logout } = contextValue;
   // console.log(contextValue);
   return (
@@ -34,16 +35,15 @@ const NavBar = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Spartan QA Tool
           </Typography>
-          {isAuthenticated ?
+          {isAuthenticated &&
             (
               <>
               {/* <Typography style={{color:'white'}} variant="h7" component="div" sx={{ flexGrow: 1 }}>
                 {user.firstName}
               </Typography> */}
-              <Button style={{color:'white'}} onClick={() => { logout() }}>Logout</Button>
+              <Button style={{color:'white'}} onClick={() => { logout(); navigate('/login');}}>Logout</Button>
               </>
-            ) :
-            (<Button onClick={() => { logout() }}>Logout</Button>)}
+            )}
         </Toolbar>
       </AppBar>
     </div>

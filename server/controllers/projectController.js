@@ -15,7 +15,13 @@ export const addProject = async (req, res) => {
 
 export const getProjectsBasedOnManager = async (req, res) => {
   const {manager_id} = req.params;
-  const serviceResponse = await getProjectsBasedOnManagerService(manager_id);
+  let serviceResponse;
+  if(manager_id === 'all'){
+    serviceResponse = await getProjectsService();
+  }
+  else{
+    serviceResponse = await getProjectsBasedOnManagerService(manager_id);
+  }
   if(serviceResponse.success === true){
     sendCustomSuccess(res, serviceResponse.data);
   }
@@ -24,15 +30,6 @@ export const getProjectsBasedOnManager = async (req, res) => {
   }
 }
 
-export const getProjects = async (req, res) => {
-  const serviceResponse = await getProjectsService(manager_id);
-  if(serviceResponse.success === true){
-    sendCustomSuccess(res, serviceResponse.data);
-  }
-  else{
-    sendInternalServerError(res);
-  }
-}
 
 export const getProjectBasedOnId = async (req, res) => {
   const {p_id} = req.params;

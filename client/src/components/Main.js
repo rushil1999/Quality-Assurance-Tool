@@ -69,8 +69,9 @@ const Main = () => {
                 <>
 
                     <ProvideAuth value={{ user, authState }}>
-                        <NavBar />
+                        
                         <Router>
+                        <NavBar />
                             <Routes>
                                 <Route path="/Dashboard"
                                     element={<Dashboard />}
@@ -127,7 +128,7 @@ const Main = () => {
                                 />
 
                                 <Route path="admin/project/"
-                                    element={<PrivateRoute path="admin/project-component/"
+                                    element={<PrivateRoute path="admin/project/"
                                         element={<AdminAnalysisProject />}
                                     />}
                                 />

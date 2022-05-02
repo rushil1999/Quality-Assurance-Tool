@@ -3,6 +3,11 @@ import cors from  'cors';
 import bodyParser from 'body-parser';
 import mysql from 'mysql';
 import util from 'util';
+import winston from 'winston';
+import pkg from 'winston';
+// const { createLogger, format, transports } = require('winston');
+
+const {format,transports} = pkg;
 
 import testRouter from './routes/testRoutes.js';
 import userRouter from './routes/userRotues.js';
@@ -37,6 +42,18 @@ export const connection = mysql.createConnection({
   database: "qa_tool"
 });
 
+
+export const logger = winston.createLogger({
+  transports:
+      new transports.File({
+      filename: 'logs/server.log',
+      format:format.combine(
+          format.timestamp({format: 'MMM-DD-YYYY HH:mm:ss'}),
+          format.align(),
+          format.printf(info => `${info.level}: ${[info.timestamp]}: ${info.message}`),
+      )}),
+  });
+  
 // export const db = makeDb();
 // const no = db.connect(connection).then(() => {console.log('connected as id ' + connection.threadId);})
 //   .catch(e=>{console.error('error connecting: ' + err.stack);});
@@ -45,9 +62,11 @@ export const connection = mysql.createConnection({
  
 connection.connect((err) =>{
   if (err) {
+    logger.info('error connecting: ' + err.stack);
     console.error('error connecting: ' + err.stack);
     return;
   }
+  logger.info('connected as id ' + connection.threadId);
   console.log('connected as id ' + connection.threadId);
 });
 

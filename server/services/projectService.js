@@ -1,4 +1,4 @@
-import { connection } from "../index.js";
+import { connection, logger } from "../index.js";
 import { parseRowDataPacket } from "./parsingService.js";
 
 
@@ -102,8 +102,8 @@ export const getProjectsBasedOnManagerService = async (manager_id) =>{
   }
 }
 
-export const getProjectsService = async (manager_id) =>{ 
-  const getProjectsBasedOnManager = `select Project.p_id,Project.p_name,Project.p_desc,Project.manager_id,project_status_table.TestReady,project_status_table.Completed
+export const getProjectsService = async () =>{ 
+  const getProjectsBased = `select Project.p_id,Project.p_name,Project.p_desc,Project.manager_id,project_status_table.TestReady,project_status_table.Completed
   from(
     select intertable.p_id,COALESCE(intertable.TestReady,0) as TestReady,COALESCE(intertable.Completed,0) as Completed
     from (    
@@ -132,7 +132,7 @@ export const getProjectsService = async (manager_id) =>{
           where tab2.c_status='Completed' or tab2.c_status is Null)as a2 on a1.p_id=a2.p_id) as intertable)as project_status_table, Project
       where Project.p_id=project_status_table.p_id ;`;
   try{
-    const response = await  connection.query(getProjectsBasedOnManager);
+    const response = await  connection.query(getProjectsBased);
     const parsedResponse = parseRowDataPacket(response);
     return{
       success: true,
@@ -173,6 +173,7 @@ export const getTotalProjectsCountService = async () => {
   try{
     const response = await connection.query(getTotalProjectsCountQuery);
     const parsedResponse = parseRowDataPacket(response);
+    // logger.info('Fetched Project Count', parsedResponse);
     return {
       success: true,
       data: parsedResponse

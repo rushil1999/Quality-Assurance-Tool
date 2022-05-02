@@ -33,23 +33,99 @@ export const addBugService = async (bug) => {
     }
     else { //Add New
       const newBugId = await getTotalBugs()+1;
+      let data;
+      let success;
+      let message;
+      console.log('Line 39', newBugId);
+      /* Begin transaction */
+      connection.beginTransaction(function(err) {
+        if (err) { throw err; }
+        console.log('Line 43', newBugId);
+        
+        connection.query('INSERT INTO Bug (b_id,b_status,created_by,resolved_by,testcase_id) VALUES (?,?, ?, ?, ?)', [newBugId, b_status, created_by, resolved_by, testcase_id], function(err, result) {
+          if (err) { 
+            connection.rollback(function() {
+              throw err;
+            });
+          }
+      
+          let commitedBugId = result.insertId;
+          console.log('adawdawdawdawdaw', result, commitedBugId);
 
-      let bugAddQuery = `INSERT INTO Bug (
-        b_id,
-        b_status,
-        created_by,
-        resolved_by,
-        testcase_id) VALUES (${newBugId}, '${b_status}', '${created_by}','${resolved_by}',${testcase_id})
-      `;
-
-      const response = await connection.query(bugAddQuery);
-      let getBugByIdQuery = `SELECT * FROM Bug WHERE b_id = ${response.insertId};`;
-      const insertedObject = await connection.query(getBugByIdQuery);
-      const result = parseRowDataPacket(insertedObject);
-      return {
-        success: true,
-        data: result[0]
-      };
+          connection.query('SELECT * FROM tester WHERE tester_id = ?', [created_by], function(err, result){
+            if(err){
+              connection.rollback(function() {
+                throw err;
+              });
+            }
+            console.log('In transaction result', parseRowDataPacket(result));
+            const {tester_id} = parseRowDataPacket(result)[0];
+            console.log(tester_id);
+            if(tester_id){
+              connection.query('UPDATE tester SET no_of_bugs_raised = no_of_bugs_raised + 1', [], function(err, result){
+                if(err){
+                  success = false;
+                  message = 'Something went Wrong in transaction';
+                  connection.rollback(function() {
+                    throw err;
+                  });
+                }
+                connection.query('SELECT * FROM Bug WHERE b_id = ?', [commitedBugId], function(err, result){
+                  data = parseRowDataPacket(result);
+                  success = true;
+                  console.log('Final Bug after everytihg', data);
+                })
+              })
+            }
+            else{
+              connection.query('INSERT INTO tester (tester_id, no_of_bugs_raised) VALUES (?, ?)', [created_by, 0], function(err, result){
+                if(err){
+                  success = false;
+                  message = 'Something went Wrong in transaction';
+                  connection.rollback(function() {
+                    throw err;
+                  });
+                }
+                connection.query('SELECT * FROM Bug WHERE b_id = ?', [commitedBugId], function(err, result){
+                  data = parseRowDataPacket(result);
+                  success = true;
+                  console.log('Final Bug after everytihg', data);
+                })
+              })
+            }
+            connection.rollback(function() {
+              throw err;
+            });
+          });
+          return{
+            success,
+            data,
+            message
+          }
+      
+          // connection.rollback(function(){
+          //   console.log('Ended');
+          // })
+          // connection.query('INSERT INTO tester VALUES logid=?', log, function(err, result) {
+          //   if (err) { 
+          //     connection.rollback(function() {
+          //       throw err;
+          //     });
+          //   }  
+          //   connection.commit(function(err) {
+          //     if (err) { 
+          //       connection.rollback(function() {
+          //         throw err;
+          //       });
+          //     }
+          //     console.log('Transaction Complete.');
+          //     connection.end();
+          //   });
+          // });
+        });
+      });
+      /* End transaction */
+            
     }
   }
   catch (err) {
@@ -111,6 +187,34 @@ export const getTotalBugs = async () => {
     console.log(e);
   }
 }
+
+// let bugAddQuery = `INSERT INTO Bug (
+//   b_id,
+//   b_status,
+//   created_by,
+//   resolved_by,
+//   testcase_id) VALUES (${newBugId}, '${b_status}', '${created_by}','${resolved_by}',${testcase_id})
+// `;
+
+// const response = await connection.query(bugAddQuery);
+// let getBugByIdQuery = `SELECT * FROM Bug WHERE b_id = ${response.insertId};`;
+// const insertedObject = await connection.query(getBugByIdQuery);
+// const result = parseRowDataPacket(insertedObject);
+// return {
+//   success: true,
+//   data: result[0]
+// };
+
+
+
+
+
+
+
+
+
+
+
 
 
 
