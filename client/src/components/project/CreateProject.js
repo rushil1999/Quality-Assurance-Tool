@@ -12,7 +12,16 @@ import Snackbar from '@mui/material/Snackbar';
 import { useNavigate } from 'react-router-dom';
 import { CardHeader } from '@mui/material';
 import { checkEmptyFields } from '../../services/formValidationService';
+import Image from '../../../src/img.jpg'; // Import using relative path
+import { Paper } from '@mui/material';
 
+const styles = {
+  paperContainer: {
+      backgroundImage: `url(${Image})`,
+
+    height: "100vh"
+  }
+};
 
 
 const CreateProject = () => {
@@ -94,6 +103,8 @@ const CreateProject = () => {
   }
   return (
     <React.Fragment>
+      <Paper style={styles.paperContainer}>
+        {/* </Paper> */}
       <Snackbar
         open={open}
         autoHideDuration={6000}
@@ -106,8 +117,8 @@ const CreateProject = () => {
       ) : (
 
         <>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Card variant="outlined" sx={{bgcolor: '#ffffe6', width: '80%'}}>
+          <div style={{ display: 'flex', justifyContent: 'center'}}>
+            <Card variant="outlined" sx={{bgcolor: '#AEC6CF', width: '80%'}}>
               <CardHeader title="Project Details">
 
               </CardHeader>
@@ -121,6 +132,7 @@ const CreateProject = () => {
                   variant="standard"
                   onChange={handleFormChange}
                   value={projectState.p_name}
+                  backgroundColor= "#21b6ae"
                 />
                 <br></br>
                 <br></br>
@@ -139,19 +151,20 @@ const CreateProject = () => {
                 <br></br>
               </CardContent>
               <CardActions style={{justifyContent:'center'}}>
-                <Button variant={'contained'} onClick={handleSubmit}>Submit</Button>
+                <Button style={{backgroundColor: "#21b6ae"}} variant={'contained'} onClick={handleSubmit}>Submit</Button>
               </CardActions>
             </Card>
           </div>
-          <Button style={{marginTop: '15px'}}variant={'contained'} onClick={() => {navigate(-1)}}>Go Back</Button>
+          <Button style={{marginTop: '15px',  backgroundColor: "#21b6ae"}}variant={'contained'} onClick={() => {navigate(-1)}}>Go Back</Button>
 
         </>
 
 
       )}
 
-
+     </Paper>
     </React.Fragment>);
+
 }
 
 export default CreateProject;

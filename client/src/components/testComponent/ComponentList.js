@@ -17,7 +17,16 @@ import { useNavigate, Navigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import { AuthContext } from '../authentication/ProvideAuth';
+import Image from '../../../src/img.jpg'; // Import using relative path
+import { Paper } from '@mui/material';
 
+const styles = {
+  paperContainer: {
+      backgroundImage: `url(${Image})`,
+
+    height: "100vh"
+  }
+};
 
 
 const ComponentList = (props) => {
@@ -128,6 +137,7 @@ const ComponentList = (props) => {
 
   return (
     <>
+    <Paper style={styles.paperContainer}>
       <Snackbar
         open={open}
         autoHideDuration={6000}
@@ -204,7 +214,7 @@ const ComponentList = (props) => {
 
       }
 
-
+</Paper>
     </>);
 }
 

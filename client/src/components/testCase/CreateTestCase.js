@@ -25,6 +25,17 @@ import FormLabel from '@mui/material/FormLabel';
 import { getDeveloperListService } from '../../services/developerService';
 import { addBugService } from '../../services/bugService';
 import Box from '@mui/material/Box';
+import Image from '../../../src/img.jpg'; // Import using relative path
+import { Paper } from '@mui/material';
+
+const styles = {
+  paperContainer: {
+      backgroundImage: `url(${Image})`,
+
+    height: "100vh"
+  }
+};
+
 
 const CreateTestCase = () => {
   const [testCaseState, setTestCaseState] = useState({});
@@ -185,6 +196,7 @@ const CreateTestCase = () => {
 
   return (
     <React.Fragment>
+      <Paper style={styles.paperContainer}>
       <Snackbar
         open={open}
         autoHideDuration={6000}
@@ -198,7 +210,7 @@ const CreateTestCase = () => {
 
         <>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Card variant="outlined" sx={{ bgcolor: '#ffffe6', width: '80%' }}>
+            <Card variant="outlined" sx={{ bgcolor: '#AEC6CF', width: '80%' }}>
               <CardHeader title="Test Case Details">
               </CardHeader>
               <CardContent>
@@ -312,7 +324,7 @@ const CreateTestCase = () => {
 
         </>
       </Drawer>
-
+      </Paper>
     </React.Fragment >);
 }
 

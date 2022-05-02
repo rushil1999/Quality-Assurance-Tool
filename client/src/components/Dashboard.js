@@ -8,8 +8,21 @@ import { getTotalTestCaseCountService } from '../services/testCaseService';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { AuthContext } from './authentication/ProvideAuth';
+// import Paper from '@mui/material-ui/Paper';
+import Image from '../../src/img.jpg'; // Import using relative path
+import { Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from './authentication/ProvideAuth';
+
+
+const styles = {
+  paperContainer: {
+      backgroundImage: `url(${Image})`,
+
+    height: "100vh"
+  }
+};
+
 
 const Dashboard = () => {
   const [statistics, setStatistics] = useState({});
@@ -59,6 +72,7 @@ const Dashboard = () => {
   }
   return (
     <>
+    <Paper style={styles.paperContainer}>
       <Snackbar
         open={open}
         autoHideDuration={6000}
@@ -71,46 +85,46 @@ const Dashboard = () => {
         (
           <>
             <Alert icon={false} severity="info" style={{ justifyContent: 'center' }}>
-              <h1 style={{ color: 'mediumseagreen' }}>Welcome to Spartan QA Tool</h1>
+            <h1 style={{color: '#4b2f41'}}>Welcome to Spartan QA Tool</h1>
             </Alert>
 
             <div style={{ display: 'flex', justifyContent: 'center', padding: '15px' }}>
               <Stack direction="row" spacing={2}>
 
-                <Box component="span" sx={{ bgcolor: '#E4FF9C', p: 6, border: '1px groove grey', borderRadius: '10px' }}>
+                <Box component="span" sx={{ bgcolor: '#8C92AC', p: 6, border: '1px groove grey', borderRadius: '10px' }}>
                   <h3>Projects Taken by the Company</h3>
                   <h2>{statistics.projects}</h2>
                 </Box>
-                <Box component="span" sx={{ bgcolor: '#E4FF9C', p: 6, border: '1px groove grey', borderRadius: '10px' }}>
+                <Box component="span" sx={{ bgcolor: '#8C92AC', p: 6, border: '1px groove grey', borderRadius: '10px' }}>
                   <h3>Test Ready Component</h3>
                   <h2>{statistics.components}</h2>
                 </Box>
-                <Box component="span" sx={{ bgcolor: '#E4FF9C', p: 6, border: '1px groove grey', borderRadius: '10px' }}>
+                <Box component="span" sx={{ bgcolor: '#8C92AC', p: 6, border: '1px groove grey', borderRadius: '10px' }}>
                   <h3>Test Cases Generated</h3>
                   <h2>{statistics.testCases}</h2>
                 </Box>
               </Stack>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'center', padding: '15px' }}>
-              <h1 style={{ color: 'mediumseagreen' }}>People Using this System</h1>
+            <div style={{display: 'flex', justifyContent: 'center', padding:'15px'}}>
+              <h1 style={{color: '#068e98'}}>People Using this System</h1>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', padding: '10px' }}>
               <Stack direction="row" spacing={2}>
 
-                <Box component="span" sx={{ bgcolor: '#E4FF9C', p: 6, border: '1px groove grey', borderRadius: '10px' }}>
+                <Box component="span" sx={{ bgcolor: '#c1c4d2', p: 6, border: '1px groove grey', borderRadius: '10px' }}>
                   <h3>Managers</h3>
                   <h2>{statistics.projects}</h2>
                 </Box>
-                <Box component="span" sx={{ bgcolor: '#E4FF9C', p: 6, border: '1px groove grey', borderRadius: '10px' }}>
+                <Box component="span" sx={{ bgcolor: '#c1c4d2', p: 6, border: '1px groove grey', borderRadius: '10px' }}>
                   <h3>Test Leads</h3>
                   <h2>{statistics.components}</h2>
                 </Box>
-                <Box component="span" sx={{ bgcolor: '#E4FF9C', p: 6, border: '1px groove grey', borderRadius: '10px' }}>
+                <Box component="span" sx={{ bgcolor: '#c1c4d2', p: 6, border: '1px groove grey', borderRadius: '10px' }}>
                   <h3>Testers</h3>
                   <h2>{statistics.projects}</h2>
                 </Box>
-                <Box component="span" sx={{ bgcolor: '#E4FF9C', p: 6, border: '1px groove grey', borderRadius: '10px' }}>
+                <Box component="span" sx={{ bgcolor: '#c1c4d2', p: 6, border: '1px groove grey', borderRadius: '10px' }}>
                   <h3>Developer</h3>
                   <h2>{statistics.components}</h2>
                 </Box>
@@ -151,6 +165,7 @@ const Dashboard = () => {
         )
 
       }
+      </Paper>
     </>
   )
 }

@@ -20,8 +20,8 @@ const NavBar = () => {
   const { isAuthenticated, logout } = contextValue;
   // console.log(contextValue);
   return (
-    <div style={{ marginBottom: '20px' }}>
-      <AppBar position="static">
+    <div style={{ marginBottom: '60px' }}>
+      <AppBar position="fixed" sx={{ bgcolor: "black" }}>
         <Toolbar>
           <IconButton
             size="large"

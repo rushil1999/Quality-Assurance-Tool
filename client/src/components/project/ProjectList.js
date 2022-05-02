@@ -15,7 +15,16 @@ import { CardHeader, Stack } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../authentication/ProvideAuth';
+import Image from '../../../src/img.jpg'; // Import using relative path
+import { Paper } from '@mui/material';
 
+const styles = {
+  paperContainer: {
+      backgroundImage: `url(${Image})`,
+
+    height: "100vh"
+  }
+};
 
 const ProjectList = () => {
   const { manager_id } = useParams();
@@ -67,6 +76,7 @@ const ProjectList = () => {
 
   return (
     <>
+    <Paper style={styles.paperContainer}>
       <Snackbar
         open={open}
         autoHideDuration={6000}
@@ -147,7 +157,7 @@ const ProjectList = () => {
 
       }
 
-
+</Paper>
     </>);
 }
 
