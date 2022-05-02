@@ -13,6 +13,8 @@ import Dashboard from './Dashboard';
 import CreateComponent from './testComponent/CreateComponent';
 import TestCaseList from './testCase/TestCaseList';
 import CreateTestCase from './testCase/CreateTestCase';
+import AdminAnalysisProject from './integration/AdminAnalysisProject';
+import AdminAnalysisTestCase from './integration/AdminAnalysisTestCase';
 
 const Main = () => {
     const [user, setUser] = useState();
@@ -71,8 +73,8 @@ const Main = () => {
                         <Router>
                             <Routes>
                                 <Route path="/Dashboard"
-                                    element = {<Dashboard/>}
-                                />                            
+                                    element={<Dashboard />}
+                                />
                                 <Route path="/login"
                                     element={<Login />}
                                 />
@@ -97,7 +99,7 @@ const Main = () => {
 
                                 <Route path="component_list/project/:project_id"
                                     element={<PrivateRoute path="component_list/project/:project_id"
-                                        element={<ComponentList source={'project'}/>}
+                                        element={<ComponentList source={'project'} />}
                                     />}
                                 />
 
@@ -114,13 +116,24 @@ const Main = () => {
 
                                 <Route path="testCase_list/component/:component_id"
                                     element={<PrivateRoute path="testCase_list/component/:component_id"
-                                        element={<TestCaseList source={'component'}/>}
+                                        element={<TestCaseList source={'component'} />}
                                     />}
                                 />
 
                                 <Route path="testCase_list/tester/:tester_id"
                                     element={<PrivateRoute path="testCase_list/tester/:tester_id"
                                         element={<TestCaseList source={'tester'} />}
+                                    />}
+                                />
+
+                                <Route path="admin/project/"
+                                    element={<PrivateRoute path="admin/project-component/"
+                                        element={<AdminAnalysisProject />}
+                                    />}
+                                />
+                                <Route path="admin/testCase/"
+                                    element={<PrivateRoute path="admin/testCase/"
+                                        element={<AdminAnalysisTestCase />}
                                     />}
                                 />
 
