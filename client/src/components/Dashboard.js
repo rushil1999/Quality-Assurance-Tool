@@ -14,7 +14,9 @@ import { Paper } from '@mui/material';
 
 const styles = {
   paperContainer: {
-      backgroundImage: `url(${Image})`
+      backgroundImage: `url(${Image})`,
+
+    height: "100vh"
   }
 };
 

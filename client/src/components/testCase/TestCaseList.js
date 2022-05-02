@@ -17,7 +17,16 @@ import { useNavigate } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import { AuthContext } from '../authentication/ProvideAuth';
+import Image from '../../../src/img.jpg'; // Import using relative path
+import { Paper } from '@mui/material';
 
+const styles = {
+  paperContainer: {
+      backgroundImage: `url(${Image})`,
+
+    height: "100vh"
+  }
+};
 
 
 const TestCaseList = (props) => {
@@ -122,6 +131,7 @@ const TestCaseList = (props) => {
 
   return (
     <>
+    <Paper style={styles.paperContainer}>
       <Snackbar
         open={open}
         autoHideDuration={6000}
@@ -190,13 +200,13 @@ const TestCaseList = (props) => {
               </Card>
             </div>
             <Button style={{marginTop: '15px'}}variant={'contained'} onClick={() => {navigate(-1)}}>Go Back</Button>
-
+            
           </React.Fragment>
 
         )
 
       }
-
+</Paper>
 
     </>);
 }

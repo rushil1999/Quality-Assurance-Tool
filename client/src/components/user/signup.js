@@ -54,7 +54,7 @@ export default function Signup() {
     var developer = data.get('developer');
     var persona;
     if (manager === 'on') persona = "manager";
-    if (testlead === 'on') persona = "teslead";
+    if (testlead === 'on') persona = "testlead";
     if (tester === 'on') persona = "tester";
     if (developer === 'on') persona = "developer";
     // eslint-disable-next-line no-console

@@ -15,6 +15,17 @@ import { checkEmptyFields } from '../../services/formValidationService';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import { useLocation } from 'react-router-dom';
+import Image from '../../../src/img.jpg'; // Import using relative path
+import { Paper } from '@mui/material';
+
+const styles = {
+  paperContainer: {
+      backgroundImage: `url(${Image})`,
+
+    height: "100vh"
+  }
+};
+
 
 const CreateComponent = () => {
   const [componentState, setComponentState] = useState({});
@@ -27,7 +38,7 @@ const CreateComponent = () => {
   const location = useLocation();
   const {state} = location;
   // console.log(location, componentState);
-
+  console.log(state);
 
   const fetchComponentDetails = async (id) => {
     setLoading(true);
@@ -55,7 +66,9 @@ const CreateComponent = () => {
     else {
       setComponentState({
         ...componentState,
-        c_status: 'Test'
+        c_status: 'TestReady',
+        project_id: state.p_id,
+        testlead_id: contextValue.user.e_id
       })
       setLoading(false);
     }
@@ -108,6 +121,7 @@ const CreateComponent = () => {
   }
   return (
     <React.Fragment>
+      <Paper style={styles.paperContainer}>
       <Snackbar
         open={open}
         autoHideDuration={6000}
@@ -121,12 +135,12 @@ const CreateComponent = () => {
 
         <>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Card variant="outlined" sx={{ bgcolor: '#ffffe6', width: '80%' }}>
+            <Card variant="outlined" sx={{ bgcolor: '#AEC6CF', width: '80%' }}>
               <CardHeader title="Component Details">
               </CardHeader>
               <CardContent>
                 <div style={{display: 'flex', justifyContent: 'center'}}>
-                  <h2>Project ID: {state.p_name}</h2>
+                  <h2>Project ID: {state.p_id}</h2>
 
                 </div>
                 <TextField
@@ -176,7 +190,7 @@ const CreateComponent = () => {
 
       )}
 
-
+</Paper>
     </React.Fragment>);
 }
 
