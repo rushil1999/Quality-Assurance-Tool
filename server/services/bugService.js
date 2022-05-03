@@ -105,11 +105,6 @@ export const addBugService = async (bug) => {
             });
           });
         });
-        // return{
-        //   success,
-        //   data: data[0],
-        //   message
-        // }
       });
       
       /* End transaction */
