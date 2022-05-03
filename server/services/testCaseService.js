@@ -16,7 +16,7 @@ export const addTestCaseService = async (testCase) => {
     } = testCase;
     let getTestCaseByIdQuery = `SELECT * FROM TestCase WHERE tc_id = ${tc_id};`;
     const created_at = moment(new Date()).format('YYYY-MM-DD HH:MM:SS');
-    console.log(testCase, created_at);
+    //console.log(testCase, created_at);
 
     let testCaseUpdateQuery = `UPDATE TestCase SET
         tc_name = '${tc_name}',
@@ -53,7 +53,7 @@ export const addTestCaseService = async (testCase) => {
           WHERE tc_id = ${tc_id};
         `;
       }
-      console.log('Update Queyr', testCaseUpdateQuery);
+      console.log('Update Query', testCaseUpdateQuery);
       const response = await connection.query(testCaseUpdateQuery);
       const insertedObject = await connection.query(getTestCaseByIdQuery);
       const result = parseRowDataPacket(insertedObject);

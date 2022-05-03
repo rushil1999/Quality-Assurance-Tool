@@ -145,8 +145,8 @@ const TestCaseList = (props) => {
         (
           <React.Fragment>
             {source === 'component' && contextValue.user.type === 'tester' &&(<Button
-              style={{ marginBottom: "15px" }}
-              onClick={redirectToTestCaseForm}
+              style={{ marginBottom: "15px", marginTop: "15px" }}
+              onClick={() => {redirectToTestCaseForm('new')}}
               variant={'contained'}
               color={'secondary'}
             >

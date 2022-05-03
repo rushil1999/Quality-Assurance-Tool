@@ -85,7 +85,7 @@ const Dashboard = () => {
         (
           <>
             <Alert icon={false} severity="info" style={{ justifyContent: 'center' }}>
-            <h1 style={{color: '#4b2f41'}}>Welcome to Spartan QA Tool</h1>
+            <h1 style={{color: '#0a75ad'}}>Welcome to Spartan QA Tool</h1>
             </Alert>
 
             <div style={{ display: 'flex', justifyContent: 'center', padding: '15px' }}>
@@ -107,7 +107,7 @@ const Dashboard = () => {
             </div>
 
             <div style={{display: 'flex', justifyContent: 'center', padding:'15px'}}>
-              <h1 style={{color: '#068e98'}}>People Using this System</h1>
+              <h1 style={{color: '#0a75ad'}}>People Using this System</h1>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', padding: '10px' }}>
               <Stack direction="row" spacing={2}>
@@ -136,16 +136,19 @@ const Dashboard = () => {
                 (
                   <Stack direction="row" spacing={2}>
                     <Button
+                    style={{marginTop: '15px',  backgroundColor: "#21b6ae"}}
                       variant={'contained'}
                       onClick={() => navigate(`/project_list/manager/${contextValue.user.e_id}`)}>
                       Go to Your Projects
                     </Button>
                     <Button
+                    style={{marginTop: '15px',  backgroundColor: "#21b6ae"}}
                       variant={'contained'}
                       onClick={() => navigate(`/admin/project/`)}>
                       Go to Data Project Analysis
                     </Button>
                     <Button
+                    style={{marginTop: '15px',  backgroundColor: "#21b6ae"}}
                       variant={'contained'}
                       onClick={() => navigate(`/admin/testCase/`)}>
                       Go to Data Test Case Analysis
@@ -153,6 +156,7 @@ const Dashboard = () => {
                   </Stack>
                 ) :
                 (<Button
+                  style={{marginTop: '15px',  backgroundColor: "#21b6ae"}}
                   variant={'contained'}
                   onClick={() => navigate(`/project_list/manager/all`)}>
                   Project List

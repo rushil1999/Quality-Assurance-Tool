@@ -151,7 +151,7 @@ const ComponentList = (props) => {
         (
           <React.Fragment>
             {source === 'project' && contextValue.user.type === 'testlead' && (<Button
-              style={{ marginBottom: "15px" }}
+              style={{ marginBottom: "15px", marginTop: "15px" }}
               onClick={redirectToAddComponentForm}
               variant={'contained'}
               color={'secondary'}

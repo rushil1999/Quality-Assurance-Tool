@@ -70,7 +70,7 @@ const CreateTestCase = () => {
   }
 
 
-  const fetchComponentDetails = async (id) => {
+  const fetchTestCaseDetails = async (id) => {
     setLoading(true);
     const serviceResponse = await fetchTestCaseDetailsService(id);
     if (serviceResponse.status === 200) {
@@ -94,15 +94,18 @@ const CreateTestCase = () => {
     const { e_id: tester_id } = contextValue.user;
     setTestCaseState({
       ...testCaseState,
-      tester_id
-    })
+      tester_id: tester_id,
+      component_id: state.c_id
+    });
     if (params.id !== 'new') { //update Project
-      fetchComponentDetails(params.id);
+      fetchTestCaseDetails(params.id);
     }
     else {
       setTestCaseState({
         ...testCaseState,
-        tc_status: 'ToDo'
+        tc_status: 'ToDo',
+        tester_id: tester_id,
+        component_id: state.c_id
       })
 
       setLoading(false);
@@ -118,7 +121,6 @@ const CreateTestCase = () => {
   }
 
   const handleSubmit = async () => {
-
     if (checkEmptyFields(testCaseState) === true) {
       const serviceResponse = await addTestCaseService(testCaseState);
       if (serviceResponse.status === 200) {

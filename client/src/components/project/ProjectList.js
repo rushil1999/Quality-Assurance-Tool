@@ -90,7 +90,7 @@ const ProjectList = () => {
         (
           <React.Fragment>
             {contextValue.user.type === 'manager'&& (<Button
-              style={{ marginBottom: "15px" }}
+              style={{ marginBottom: "15px",  marginTop: "15px"  }}
               onClick={() => redirectToProjectForm('new')}
               variant={'contained'}
               color={'secondary'}
