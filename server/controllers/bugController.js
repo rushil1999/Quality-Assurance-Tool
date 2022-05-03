@@ -1,3 +1,5 @@
+//SJSU CMPE 138 Spring 2022 TEAM3 
+
 import  {connection} from '../index.js';
 import { addBugService, getBugBasedOnDeveloperService } from '../services/bugService.js';
 import { sendCustomSuccess, sendInternalServerError } from './common.js';

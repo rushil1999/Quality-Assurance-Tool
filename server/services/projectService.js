@@ -1,3 +1,5 @@
+//SJSU CMPE 138 Spring 2022 TEAM3 
+
 import { connection, logger } from "../index.js";
 import { parseRowDataPacket } from "./parsingService.js";
 

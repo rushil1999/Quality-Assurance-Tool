@@ -1,3 +1,5 @@
+//SJSU CMPE 138 Spring 2022 TEAM3 
+
 import express from 'express';
 import cors from  'cors';
 import bodyParser from 'body-parser';
@@ -16,7 +18,7 @@ import componentRouter from  './routes/componentRoutes.js';
 import testCaseRouter from  './routes/testCaseRoutes.js';
 import bugRouter from  './routes/bugRotues.js';
 
-const port = 5000;
+const port = 5001;
 const corsConfig = {
   credentials: true,
   origin: true,

@@ -1,3 +1,5 @@
+//SJSU CMPE 138 Spring 2022 TEAM3 
+
 import pkg1 from 'bcrypt';
 import { connection } from '../index.js';
 import { getDeveloperListService, insertDeveloper } from '../services/developerService.js';

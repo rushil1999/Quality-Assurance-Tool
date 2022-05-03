@@ -1,3 +1,5 @@
+//SJSU CMPE 138 Spring 2022 TEAM3 
+
 import React, { useState, useEffect, useContext } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import TextField from '@mui/material/TextField';
@@ -282,7 +284,7 @@ const CreateTestCase = () => {
                     <br></br>
                     {(originalStatus === 'Failed') && (
                       <>
-                        <div>
+                        <div style={{ color: "red" }}>
                           This test case is Failed
                         </div>
                         <Button variant={'contained'} onClick={toggleDrawer(true)}>
@@ -317,7 +319,7 @@ const CreateTestCase = () => {
                   // onKeyDown={toggleDrawer(false)}
                   >
                     <Stack>
-                      <Button onClick={toggleDrawer(false)} variant={'outlined'}>Close the Drawer</Button>
+                      <Button onClick={toggleDrawer(false)} variant={'contained'} color={'secondary'}>Close</Button>
                       <br></br>
                       <FormControl style={{ paddingLeft: '20px' }}>
                         <FormLabel id="demo-controlled-radio-buttons-group">Developers</FormLabel>
@@ -347,4 +349,3 @@ const CreateTestCase = () => {
 }
 
 export default CreateTestCase;
-

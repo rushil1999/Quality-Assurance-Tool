@@ -1,3 +1,5 @@
+//SJSU CMPE 138 Spring 2022 TEAM3 
+
 import express from 'express';
 import { connection } from '../index.js';
 

@@ -1,3 +1,5 @@
+//SJSU CMPE 138 Spring 2022 TEAM3 
+
 import React, { useContext } from 'react';
 import { useState, useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
