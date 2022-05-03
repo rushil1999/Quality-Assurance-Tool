@@ -1,3 +1,5 @@
+//SJSU CMPE 138 Spring 2022 TEAM3 
+
 import { connection } from "../index.js";
 import { addProjectService, getProjectsBasedOnManagerService, getProjectBasedOnIdService, getTotalProjectsCountService, getProjectsService } from "../services/projectService.js";
 import { sendInternalServerError, sendCustomError, sendCustomSuccess } from "./common.js";

@@ -1,3 +1,5 @@
+//SJSU CMPE 138 Spring 2022 TEAM3 
+
 import { render, screen } from '@testing-library/react';
 import App from './App';
 

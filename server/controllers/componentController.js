@@ -1,3 +1,5 @@
+//SJSU CMPE 138 Spring 2022 TEAM3 
+
 import { connection} from "../index.js";
 import { addComponentService, getComponentsBasedOnTestLeadService, getTotalComponentCountService, getComponentBasedOnIdService } from "../services/componentService.js";
 import { parseRowDataPacket } from "../services/parsingService.js";
