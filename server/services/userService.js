@@ -1,4 +1,4 @@
-import { connection } from '../index.js';
+import { connection, logger } from '../index.js';
 import { parseRowDataPacket } from './parsingService.js';
 import { insertTester } from './testerService.js';
 import { insertDeveloper } from './developerService.js';
@@ -22,7 +22,6 @@ export const signUpService = async (user) => {
     
     async function hashPassword(password) {
       const salt = await genSalt(10);
-      console.log(salt, password);
       const hash = await _hash(password, salt);
       return hash;
     }
@@ -50,7 +49,8 @@ export const signUpService = async (user) => {
       getUserByIdQuery = `SELECT * FROM User WHERE e_id = ${response.insertId}`;
       const insertedObject = await connection.query(getUserByIdQuery);
       const result = parseRowDataPacket(insertedObject);
-      console.log('Post Entering ', response.insertId);
+      logger.info('User Signed up', result.e_id);
+      
       if(type === 'tester'){
         const serviceResponse = await insertTester(response.insertId);
         if(serviceResponse.length> 0){
@@ -100,7 +100,7 @@ export const signInService = async (credentials) => {
   try{
     const response = await connection.query(sql_findEmail);
     const parsedResponse = parseRowDataPacket(response);
-    console.log('Parsed Response', parsedResponse);
+    logger.info('User Signed up', parsedResponse.e_id);
     if(parsedResponse.length > 0){
       const match = await pkg1.compareSync(pwd, parsedResponse[0].pwd.toString());
       if(match){

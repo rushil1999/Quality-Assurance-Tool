@@ -44,7 +44,6 @@ const ComponentList = (props) => {
   }
   id = parseInt(id);
 
-  console.log(params, id);
   const [componentListState, setComponentListState] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState(false);
@@ -59,7 +58,6 @@ const ComponentList = (props) => {
 
   const fetchComponentListOfProject = async () => {
     const serviceResponse = await fetchComponentListOfProjectService(id);
-    console.log(serviceResponse.data);
     if (serviceResponse.status === 200) {
       setComponentListState(serviceResponse.data.payload);
     }
@@ -78,7 +76,6 @@ const ComponentList = (props) => {
   }
   const fetchComponentListOfTestlead = async () => {
     const serviceResponse = await fetchComponentListOfTestleadService(id);
-    console.log(serviceResponse.data.payload);
     if (serviceResponse.status === 200) {
       setComponentListState(serviceResponse.data.payload);
       setLoading(false);
@@ -125,7 +122,6 @@ const ComponentList = (props) => {
   }
 
   const redirectToAddComponentForm = () => {
-    console.log('Clicked', id);
     navigate("/component/new", { replace: true, state: { p_id: id } });
   }
 

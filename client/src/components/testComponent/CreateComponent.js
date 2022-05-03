@@ -37,8 +37,6 @@ const CreateComponent = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const {state} = location;
-  // console.log(location, componentState);
-  console.log(state);
 
   const fetchComponentDetails = async (id) => {
     setLoading(true);
@@ -55,7 +53,6 @@ const CreateComponent = () => {
 
   useEffect(() => {
     const { e_id: testlead_id } = contextValue.user;
-    console.log(testlead_id);
     setComponentState({
       ...componentState,
       testlead_id
@@ -75,7 +72,6 @@ const CreateComponent = () => {
   }, [])
 
   const handleFormChange = (e) => {
-    // console.log('Form Change', e.target.name, e.target.value);
     setComponentState({
       ...componentState,
       [e.target.name]: e.target.value
@@ -83,7 +79,6 @@ const CreateComponent = () => {
   }
 
   const handleSubmit = async () => {
-    console.log(componentState);
     if (checkEmptyFields(componentState) === true) {
       const serviceResponse = await addComponentService(componentState);
       if (serviceResponse.status === 200) {

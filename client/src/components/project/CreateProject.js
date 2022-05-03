@@ -33,7 +33,6 @@ const CreateProject = () => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
-  // console.log(contextValue);
 
   const fetchProjectDetails = async (id) => {
     setLoading(true);
@@ -50,7 +49,6 @@ const CreateProject = () => {
 
   useEffect(() => {
     const { e_id: manager_id } = contextValue.user;
-    console.log(manager_id);
     setProjectState({
       ...projectState,
       manager_id
@@ -65,7 +63,6 @@ const CreateProject = () => {
   }, [])
 
   const handleFormChange = (e) => {
-    // console.log('Form Change', e.target.name, e.target.value);
     setProjectState({
       ...projectState,
       [e.target.name]: e.target.value

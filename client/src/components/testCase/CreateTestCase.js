@@ -58,12 +58,10 @@ const CreateTestCase = () => {
   const location = useLocation();
   const contextValue = useContext(AuthContext);
   const { state } = location;
-  console.log(state);
   const fetchDeveloperList = async () => {
     setDrawerLoadingState(true);
     const serviceResponse = await getDeveloperListService();
     if (serviceResponse.status === 200) {
-      console.log(serviceResponse);
       setDeveloperListState(serviceResponse.data.payload);
     }
     else {
@@ -117,7 +115,6 @@ const CreateTestCase = () => {
   }, [])
 
   const handleFormChange = (e) => {
-    // console.log('Form Change', e.target.name, e.target.value);
     setTestCaseState({
       ...testCaseState,
       [e.target.name]: e.target.value

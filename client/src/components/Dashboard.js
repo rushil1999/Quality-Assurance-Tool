@@ -30,7 +30,6 @@ const Dashboard = () => {
   const [message, setMessage] = useState("");
 
   const contextValue = useContext(AuthContext);
-  console.log(contextValue);
   const navigate = useNavigate();
 
   const fetchTotalProjectsCount = async () => {
@@ -154,12 +153,20 @@ const Dashboard = () => {
                     </Button>
                   </Stack>
                 ) :
+                (contextValue.user.type === 'developer' ? (
+                  <Button
+                  style={{marginTop: '15px',  backgroundColor: "#21b6ae"}}
+                  variant={'contained'}
+                  onClick={() => navigate(`/bug_list/developer/${contextValue.user.e_id}`)}>
+                  Bug List
+                </Button>
+                ) :
                 (<Button
                   style={{marginTop: '15px',  backgroundColor: "#21b6ae"}}
                   variant={'contained'}
                   onClick={() => navigate(`/project_list/manager/all`)}>
                   Project List
-                </Button>)
+                </Button>))
               }
             </div>)}
           </>

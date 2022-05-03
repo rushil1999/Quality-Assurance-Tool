@@ -1,4 +1,5 @@
 import { connection } from "../index.js";
+import { getComponentsBasedOnTestLeadService } from "./componentService.js";
 import { parseRowDataPacket } from "./parsingService.js";
 
 
@@ -11,7 +12,6 @@ export const addBugService = async (bug) => {
       resolved_by,
       testcase_id,
     } = bug;
-    console.log(bug);
     let getBugByIdQuery = `SELECT * FROM Bug WHERE b_id = ${b_id};`;
 
     let bugUpdateQuery = `UPDATE Bug SET
@@ -36,11 +36,9 @@ export const addBugService = async (bug) => {
       let data;
       let success;
       let message;
-      console.log('Line 39', newBugId);
       /* Begin transaction */
       connection.beginTransaction(function(err) {
         if (err) { throw err; }
-        console.log('Line 43', newBugId);
         
         connection.query('INSERT INTO Bug (b_id,b_status,created_by,resolved_by,testcase_id) VALUES (?,?, ?, ?, ?)', [newBugId, b_status, created_by, resolved_by, testcase_id], function(err, result) {
           if (err) { 
@@ -49,8 +47,7 @@ export const addBugService = async (bug) => {
             });
           }
       
-          let commitedBugId = result.insertId;
-          console.log('adawdawdawdawdaw', result, commitedBugId);
+          // let commitedBugId = result.insertId;
 
           connection.query('SELECT * FROM tester WHERE tester_id = ?', [created_by], function(err, result){
             if(err){
@@ -58,36 +55,28 @@ export const addBugService = async (bug) => {
                 throw err;
               });
             }
-            console.log('In transaction result', parseRowDataPacket(result));
             const {tester_id} = parseRowDataPacket(result)[0];
-            console.log('Tested ID', tester_id);
             if(tester_id){
-              console.log('NOOO');
               connection.query('UPDATE tester SET no_of_bugs_raised = no_of_bugs_raised + 1 WHERE tester_id = ?', [tester_id], function(err, result){
                 if(err){
-                  console.log('FUCKKKKK');
                   success = false;
                   message = 'Something went Wrong in transaction';
                   connection.rollback(function() {
                     throw err;
                   });
                 }
-                connection.query('SELECT * FROM Bug WHERE b_id = ?', [commitedBugId], function(err, result){
+                connection.query('SELECT * FROM Bug WHERE b_id = ?', [newBugId], function(err, result){
                   if(err){
-                    console.log('FUCKKKKK');
-
                     success = false;
                     message = 'Something went Wrong in transaction';
                     connection.rollback(function() {
                       throw err;
                     });
                   }
-                  console.log('RUSHILHSLAISHL');
                   data = parseRowDataPacket(result);
                   success = true;
-                  console.log('Final Bug after everytihg', data);
-                })
-              })
+                });
+              });
             }
             else{
               connection.query('INSERT INTO tester (tester_id, no_of_bugs_raised) VALUES (?, ?)', [created_by, 0], function(err, result){
@@ -101,44 +90,30 @@ export const addBugService = async (bug) => {
                 connection.query('SELECT * FROM Bug WHERE b_id = ?', [commitedBugId], function(err, result){
                   data = parseRowDataPacket(result);
                   success = true;
-                  console.log('Final Bug after everytihg', data);
                 })
               })
             }
-            connection.rollback(function() {
-              throw err;
+            connection.commit(function(err) {
+              if (err) { 
+                connection.rollback(function() {
+                  throw err;
+                });
+              }
+              connection.end();
             });
           });
-          return{
-            success,
-            data,
-            message
-          }
-      
-          // connection.rollback(function(){
-          //   console.log('Ended');
-          // })
-          // connection.query('INSERT INTO tester VALUES logid=?', log, function(err, result) {
-          //   if (err) { 
-          //     connection.rollback(function() {
-          //       throw err;
-          //     });
-          //   }  
-          //   connection.commit(function(err) {
-          //     if (err) { 
-          //       connection.rollback(function() {
-          //         throw err;
-          //       });
-          //     }
-          //     console.log('Transaction Complete.');
-          //     connection.end();
-          //   });
-          // });
         });
+        // return{
+        //   success,
+        //   data: data[0],
+        //   message
+        // }
       });
+      
       /* End transaction */
             
-    }
+     }
+
   }
   catch (err) {
     console.log(err);
@@ -167,11 +142,32 @@ export const getBugBasedOnTesterService = async (tester_id) => {
   }
 }
 
+export const getBugBasedOnDeveloperService = async (tester_id) => {
+  try{
+    const getBugBasedOnTesterQuery = `select table1.b_id, table1.testcase_id,table1.b_status,table1.tester_id,table1.resolved_by, table1.tc_name,User.firstName
+    from (select * 
+    from Bug,TestCase
+    where Bug.testcase_id=TestCase.tc_id) as table1, User
+    where table1.tester_id=User.e_id and table1.resolved_by = ${tester_id}`;
+    const result = parseRowDataPacket(await connection.query(getBugBasedOnTesterQuery));
+    return {
+      success: true,
+      data: result
+    }
+  }
+  catch(e){
+    console.log(e);
+    return {
+      success: false,
+      message: e
+    }
+  }
+}
+
 export const getBugBasedOnTestCaseService = async (testcase_id) => {
   try{
     const getBugBasedOnTestCaseQuery = `SELECT * FROM Bug WHERE testcase_id = ${testcase_id}`;
     const result = parseRowDataPacket(await connection.query(getBugBasedOnTestCaseQuery));
-    console.log(result);
     return {
       success: true,
       data: result
@@ -191,7 +187,6 @@ export const getTotalBugs = async () => {
   try{
     const getTotalBugCount = `SELECT COUNT(*) FROM Bug`;
     const result = parseRowDataPacket( await connection.query(getTotalBugCount));
-    console.log('Bug Count', result);
     return result[0]['COUNT(*)'];
 
   }

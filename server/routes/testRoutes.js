@@ -15,7 +15,6 @@ router.get('/db', (req, res)=>{
       sql: 'SELECT * FROM test'
     }, (err, result)=>{
       if(!err){
-        console.log("After Query Run");
         res.status(200).json({
           test: "DB Testing",
           status: "OK",

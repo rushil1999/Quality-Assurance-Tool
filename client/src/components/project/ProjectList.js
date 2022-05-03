@@ -39,7 +39,6 @@ const ProjectList = () => {
   const contextValue = useContext(AuthContext);
   const fetchProjectListOfManager = async () => {
     const serviceResponse = await fetchProjectListOfManagerService(manager_id);
-    console.log(serviceResponse.data.payload);
     if (serviceResponse.status === 200) {
       setProjectListState(serviceResponse.data.payload);
       setLoading(false);
@@ -66,7 +65,6 @@ const ProjectList = () => {
   }
 
   const redirectToComponents = (project_id) => {
-    console.log(project_id);
     navigate(`/component_list/project/${project_id}`)
   }
 

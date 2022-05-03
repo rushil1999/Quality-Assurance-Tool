@@ -9,7 +9,6 @@ export const signin = async (payload) => {
     const response = await fetch(`${BACKEND_URL}:${BACKEND_PORT}/user/signin`, options);
     const status = response.status;
     const data = await response.json();
-    console.log('Service Data', data);
     return {status, data};
 }
 
@@ -24,6 +23,5 @@ export const signup = async (payload) => {
     const response = await fetch(`${BACKEND_URL}:${BACKEND_PORT}/user/signup`, options);
     const status = response.status;
     const data = await response.json();
-    console.log('Service Data', data);
     return {status, data};
 }

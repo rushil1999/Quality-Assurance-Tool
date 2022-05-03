@@ -15,19 +15,18 @@ import TestCaseList from './testCase/TestCaseList';
 import CreateTestCase from './testCase/CreateTestCase';
 import AdminAnalysisProject from './integration/AdminAnalysisProject';
 import AdminAnalysisTestCase from './integration/AdminAnalysisTestCase';
+import BugList from './bug/BugList';
 
 const Main = () => {
     const [user, setUser] = useState();
     const [loading, setLoading] = useState(true);
     const [authState, setAuthState] = useState(false);
-    // const [token, setToken] = useState();
 
     useEffect(() => {
         fetchInitialStateForUser();
     }, []);
 
     const fetchInitialStateForUser = async () => {
-        // const token = window.localStorage.getItem('token');
         const userObj = window.localStorage.getItem('user');
         const user = JSON.parse(userObj);
         if (user) {
@@ -39,29 +38,6 @@ const Main = () => {
             setAuthState(false);
             setLoading(false);
         }
-        // if(token && token !== undefined){
-        //     console.log('TOKEN', token);
-        //     setLoading(true);
-        //     const response = await fetch(`${BACKEND_URL}:${BACKEND_PORT}/user/verifyToken/${token}`);
-        //     console.log(response);
-        //     if(response.state === 200){
-        //         setAuthState(response.state === 200);
-        //         setUser(user);
-        //         setToken(token);
-        //         setLoading(false);
-        //     }
-        //     else{
-        //         // history.push('/login');
-        //         setAuthState(false);
-        //         setLoading(false);
-        //     }
-        // }
-        // else{
-        //     console.log('herer');
-        //     // history.push('/login');
-        //     setAuthState(false);
-        //     setLoading(false);
-        // }
     }
     return (
         <div>
@@ -135,6 +111,11 @@ const Main = () => {
                                 <Route path="admin/testCase/"
                                     element={<PrivateRoute path="admin/testCase/"
                                         element={<AdminAnalysisTestCase />}
+                                    />}
+                                />
+                                <Route path="bug_list/developer/:developer_id"
+                                    element={<PrivateRoute path="bug_list/developer/:developer_id"
+                                        element={<BugList source={'developer'}/>}
                                     />}
                                 />
 

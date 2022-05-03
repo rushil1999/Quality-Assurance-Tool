@@ -1,4 +1,4 @@
-import { connection } from "../index.js";
+import { connection, logger } from "../index.js";
 import { parseRowDataPacket } from "./parsingService.js";
 
 
@@ -36,6 +36,8 @@ export const addComponentService = async (component) => {
       const response = await connection.query(componentUpdateQuery);
       const insertedObject = await connection.query(getComponentByIdQuery);
       const result = parseRowDataPacket(insertedObject);
+      logger.info('Component Added', result.c_id);
+
       return {
         success: true,
         data: result[0]
@@ -48,6 +50,8 @@ export const addComponentService = async (component) => {
       let getComponentByIdQuery = `SELECT * FROM Component WHERE c_id = ${response.insertId};`;
       const insertedObject = await connection.query(getComponentByIdQuery);
       const result = parseRowDataPacket(insertedObject);
+      logger.info('Component Updated', result.c_id);
+
       return {
         success: true,
         data: result[0]
@@ -68,6 +72,8 @@ export const getComponentBasedOnIdService = async (c_id) =>{
   try{
     const response = await  connection.query(getComponentBasedOnId);
     const parsedResponse = parseRowDataPacket(response);
+    logger.info('Components Fetched');
+
     return{
       success: true,
       data: parsedResponse
@@ -92,6 +98,8 @@ export const getComponentsBasedOnTestLeadService = async (testlead_id) => {
       // const users = parseRowDataPacket(userResponse);
       const response = await connection.query(getComponentsBasedOnTestLead); 
       const parsedResponse = parseRowDataPacket(response);
+      logger.info('Component Fetched');
+
       console.log(parsedResponse);
       return {
         success: true,
@@ -111,6 +119,8 @@ export const getTotalComponentCountService = async() => {
   try{
     const response = await connection.query(getTotalComponentCountQuery);
     const parsedResponse = parseRowDataPacket(response);
+    logger.info('Components Count Fetched', parsedResponse);
+
     return{
       success: true,
       data: parsedResponse

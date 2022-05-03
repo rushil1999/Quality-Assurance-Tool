@@ -1,5 +1,5 @@
 import  {connection} from '../index.js';
-import { addBugService } from '../services/bugService.js';
+import { addBugService, getBugBasedOnDeveloperService } from '../services/bugService.js';
 import { sendCustomSuccess, sendInternalServerError } from './common.js';
 
 
@@ -13,3 +13,13 @@ export const addBug = async (req, res) => {
     }
 }
 
+export const getBugBasedOnDeveloper = async (req, res) => {
+    const {developer_id} = req.params;
+    const serviceResponse = await getBugBasedOnDeveloperService(developer_id);
+    if(serviceResponse.success === true){
+        sendCustomSuccess(res, serviceResponse.data);
+    }
+    else{
+        sendInternalServerError(res);
+    }
+}

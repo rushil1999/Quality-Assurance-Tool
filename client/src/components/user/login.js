@@ -41,7 +41,6 @@ export default function Login() {
   const history = useNavigate();
 
   const location = useLocation();
-  console.log('Location', location);
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);

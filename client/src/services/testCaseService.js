@@ -20,7 +20,6 @@ export const fetchTestCaseDetailsService = async (id) => {
   const response = await fetch(`${BACKEND_URL}:${BACKEND_PORT}/testCase/details/${id}`, options);
   const status = response.status;
   const data = await response.json();
-  console.log('TestCase Service ', data);
   return { status, data };
 }
 
@@ -32,7 +31,6 @@ export const fetchTestCaseListOfComponentService = async(component_id) => {
   const response = await fetch(`${BACKEND_URL}:${BACKEND_PORT}/testCase/component/${component_id}`, options);
   const status = response.status;
   const data = await response.json();
-  console.log('TestCase Service ', data, status);
   return { status, data };
 }
 
@@ -45,7 +43,6 @@ export const fetchTestCaseListOfTesterService = async(tester_id) => {
   const response = await fetch(`${BACKEND_URL}:${BACKEND_PORT}/testCase/tester/${tester_id}`, options);
   const status = response.status;
   const data = await response.json();
-  console.log('TestCase Service ', data);
   return { status, data };
 }
 
@@ -59,7 +56,6 @@ export const getTotalTestCaseCountService = async () => {
   const response = await fetch(`${BACKEND_URL}:${BACKEND_PORT}/testCase/count`, options);
   const status = response.status;
   const data = await response.json();
-  console.log('TestCase Service ', data);
   return { status, data };
 }
 

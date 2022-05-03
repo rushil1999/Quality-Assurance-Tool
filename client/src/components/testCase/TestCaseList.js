@@ -45,7 +45,7 @@ const TestCaseList = (props) => {
   id = parseInt(id);
 
   console.log(params, id);
-  const [testCaseListState, setComponentListState] = useState([]);
+  const [testCaseListState, setTestCaseListState] = useState([]);
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState(false);
   const [open, setOpen] = useState(false);
@@ -60,7 +60,7 @@ const TestCaseList = (props) => {
     const serviceResponse = await fetchTestCaseListOfComponentService(id);
     console.log(serviceResponse.data);
     if (serviceResponse.status === 200) {
-      setComponentListState(serviceResponse.data.payload);
+      setTestCaseListState(serviceResponse.data.payload);
     }
     else if (serviceResponse === 500) {
       setOpen(true);
@@ -79,7 +79,7 @@ const TestCaseList = (props) => {
     const serviceResponse = await fetchTestCaseListOfTesterService(id);
     console.log(serviceResponse.data.payload);
     if (serviceResponse.status === 200) {
-      setComponentListState(serviceResponse.data.payload);
+      setTestCaseListState(serviceResponse.data.payload);
       setLoading(false);
     }
     else if (serviceResponse === 500) {

@@ -8,7 +8,6 @@ import { sendCustomError, sendCustomSuccess, sendInternalServerError } from './c
 
 export const signUp = async (req, res) => {
   const serviceResponse = await signUpService(req.body);
-  console.log('SERVICE RESPONSE', serviceResponse);
   if(serviceResponse.success === true){
     sendCustomSuccess(res, serviceResponse.data);
   }
@@ -19,9 +18,7 @@ export const signUp = async (req, res) => {
 
 
 export const signIn = async (req, res) => {
-  console.log(req.body);
   const serviceResponse = await signInService(req.body);
-  console.log({serviceResponse});
   if(serviceResponse.success === true){
     sendCustomSuccess(res, serviceResponse.data);
   }

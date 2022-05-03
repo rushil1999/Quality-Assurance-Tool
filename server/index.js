@@ -66,7 +66,7 @@ connection.connect((err) =>{
     console.error('error connecting: ' + err.stack);
     return;
   }
-  logger.info('connected as id ' + connection.threadId);
+  logger.info('Server connected as id ' + connection.threadId);
   console.log('connected as id ' + connection.threadId);
 });
 

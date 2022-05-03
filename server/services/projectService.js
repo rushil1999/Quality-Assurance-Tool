@@ -1,7 +1,6 @@
 import { connection, logger } from "../index.js";
 import { parseRowDataPacket } from "./parsingService.js";
 
-
 export const addProjectService = async (project) => {
   try{
     const {
@@ -30,6 +29,8 @@ export const addProjectService = async (project) => {
       const response = await connection.query(projectUpdateQuery);
       const insertedObject = await connection.query(getProjectByIdQuery);
       const result = parseRowDataPacket(insertedObject);
+      logger.info('Project Added ' + result.p_id);
+
       return {
         success: true,
         data: result[0]
@@ -88,6 +89,8 @@ export const getProjectsBasedOnManagerService = async (manager_id) =>{
   try{
     const response = await  connection.query(getProjectsBasedOnManager);
     const parsedResponse = parseRowDataPacket(response);
+    logger.info('Projects Fetched');
+
     return{
       success: true,
       data: parsedResponse
@@ -134,6 +137,8 @@ export const getProjectsService = async () =>{
   try{
     const response = await  connection.query(getProjectsBased);
     const parsedResponse = parseRowDataPacket(response);
+    logger.info('Projects Fetched');
+
     return{
       success: true,
       data: parsedResponse
@@ -153,6 +158,8 @@ export const getProjectBasedOnIdService = async (p_id) =>{
   try{
     const response = await  connection.query(getProjectsBasedOnId);
     const parsedResponse = parseRowDataPacket(response);
+    logger.info('Projects Fetched');
+
     return{
       success: true,
       data: parsedResponse
@@ -173,6 +180,8 @@ export const getTotalProjectsCountService = async () => {
   try{
     const response = await connection.query(getTotalProjectsCountQuery);
     const parsedResponse = parseRowDataPacket(response);
+    logger.info('Projects Count Fetched', parsedResponse);
+
     // logger.info('Fetched Project Count', parsedResponse);
     return {
       success: true,

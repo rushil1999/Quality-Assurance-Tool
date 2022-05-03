@@ -8,12 +8,10 @@ export const fetchProjectDetailsService = async (id) => {
   const response = await fetch(`${BACKEND_URL}:${BACKEND_PORT}/project/details/${id}`, options);
   const status = response.status;
   const data = await response.json();
-  console.log('Project Service ', data);
   return { status, data };
 }
 
 export const addProjectService = async (project) => {
-  console.log(project);
   const options = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -33,7 +31,6 @@ export const fetchProjectListOfManagerService = async(manager_id) => {
   const response = await fetch(`${BACKEND_URL}:${BACKEND_PORT}/project/manager/${manager_id}`, options);
   const status = response.status;
   const data = await response.json();
-  console.log('Project Service ', data);
   return { status, data };
 }
 
@@ -47,6 +44,5 @@ export const getTotalProjectCountService = async () => {
   const response = await fetch(`${BACKEND_URL}:${BACKEND_PORT}/project/count`, options);
   const status = response.status;
   const data = await response.json();
-  console.log('Project Service ', data);
   return { status, data };
 }

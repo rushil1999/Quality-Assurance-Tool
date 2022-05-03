@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { connection } from '../index.js';
+import { connection, logger } from '../index.js';
 import { parseRowDataPacket } from './parsingService.js';
 
 
@@ -53,23 +53,22 @@ export const addTestCaseService = async (testCase) => {
           WHERE tc_id = ${tc_id};
         `;
       }
-      console.log('Update Query', testCaseUpdateQuery);
       const response = await connection.query(testCaseUpdateQuery);
       const insertedObject = await connection.query(getTestCaseByIdQuery);
       const result = parseRowDataPacket(insertedObject);
-      console.log(result);
-      // console.log('RRR', result, result[0].created_at, typeof result[0].created_at);
+      logger.info('Test Case Updated', result.tc_id);
       return {
         success: true,
         data: result[0]
       };
     }
     else { //Add New
-      // console.log('Checking the query', testCaseAddQuery);
       const response = await connection.query(testCaseAddQuery);
       getTestCaseByIdQuery = `SELECT * FROM TestCase WHERE tc_id = ${response.insertId};`;
       const insertedObject = await connection.query(getTestCaseByIdQuery);
       const result = parseRowDataPacket(insertedObject);
+      logger.info('Test Case Added', result.tc_id);
+
       return {
         success: true,
         data: result[0]
@@ -89,6 +88,8 @@ export const getTestCasesBasedOnComponentService = async (component_id) => {
   const getTestCasesBasedOnComponentQuery = `SELECT * FROM TestCase WHERE component_id = ${component_id}`;
   try {
     const result = parseRowDataPacket(await connection.query(getTestCasesBasedOnComponentQuery));
+    logger.info('Test Cases Fetched');
+
     return {
       success: true,
       data: result,
@@ -107,6 +108,8 @@ export const getTestCasesBasedOnTesterService = async (tester_id) => {
   const getTestCasesBasedOnTesterQuery = `SELECT * FROM TestCase WHERE tester_id = ${tester_id}`;
   try {
     const result = parseRowDataPacket(await connection.query(getTestCasesBasedOnTesterQuery));
+    logger.info('Test Cases Fetched');
+
     return {
       success: true,
       data: result,
@@ -126,6 +129,8 @@ export const getTestCaseBasedOnIdService = async (tc_id) =>{
   try{
     const response = await  connection.query(getTestCaseBasedOnId);
     const parsedResponse = parseRowDataPacket(response);
+    logger.info('Test Case Fetched', parsedResponse);
+
     return{
       success: true,
       data: parsedResponse
@@ -146,6 +151,8 @@ export const getTotalTestCaseCountService = async () => {
   try {
     const response = await connection.query(getTotalTestCaseCountQuery);
     const parsedResponse = parseRowDataPacket(response);
+    logger.info('Test Cases Count Fetched', response);
+
     return {
       success: true,
       data: parsedResponse
