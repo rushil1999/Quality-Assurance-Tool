@@ -60,10 +60,12 @@ export const addBugService = async (bug) => {
             }
             console.log('In transaction result', parseRowDataPacket(result));
             const {tester_id} = parseRowDataPacket(result)[0];
-            console.log(tester_id);
+            console.log('Tested ID', tester_id);
             if(tester_id){
-              connection.query('UPDATE tester SET no_of_bugs_raised = no_of_bugs_raised + 1', [], function(err, result){
+              console.log('NOOO');
+              connection.query('UPDATE tester SET no_of_bugs_raised = no_of_bugs_raised + 1 WHERE tester_id = ?', [tester_id], function(err, result){
                 if(err){
+                  console.log('FUCKKKKK');
                   success = false;
                   message = 'Something went Wrong in transaction';
                   connection.rollback(function() {
@@ -71,6 +73,16 @@ export const addBugService = async (bug) => {
                   });
                 }
                 connection.query('SELECT * FROM Bug WHERE b_id = ?', [commitedBugId], function(err, result){
+                  if(err){
+                    console.log('FUCKKKKK');
+
+                    success = false;
+                    message = 'Something went Wrong in transaction';
+                    connection.rollback(function() {
+                      throw err;
+                    });
+                  }
+                  console.log('RUSHILHSLAISHL');
                   data = parseRowDataPacket(result);
                   success = true;
                   console.log('Final Bug after everytihg', data);

@@ -8,7 +8,6 @@ import { getTotalTestCaseCountService } from '../services/testCaseService';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-// import Paper from '@mui/material-ui/Paper';
 import Image from '../../src/img.jpg'; // Import using relative path
 import { Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -131,7 +130,7 @@ const Dashboard = () => {
 
               </Stack>
             </div>
-            <div style={{display: 'flex', justifyContent: 'center'}}>
+            {contextValue.isAuthenticated && (<div style={{display: 'flex', justifyContent: 'center'}}>
               {contextValue.user.type === 'manager' ?
                 (
                   <Stack direction="row" spacing={2}>
@@ -162,7 +161,7 @@ const Dashboard = () => {
                   Project List
                 </Button>)
               }
-            </div>
+            </div>)}
           </>
 
 

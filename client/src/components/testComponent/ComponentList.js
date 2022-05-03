@@ -126,11 +126,6 @@ const ComponentList = (props) => {
 
   const redirectToAddComponentForm = () => {
     console.log('Clicked', id);
-    // return(<Navigate
-    //   to={`/component/new`}
-    //   replace={true}
-    //   state={{ project_id: params.id }}
-    // />)
     navigate("/component/new", { replace: true, state: { p_id: id } });
   }
 

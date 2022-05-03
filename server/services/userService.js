@@ -97,6 +97,44 @@ export const signUpService = async (user) => {
 export const signInService = async (credentials) => {
   const {email, pwd} = credentials;
   let sql_findEmail = `SELECT * FROM User where email = '${email}'`;
+  try{
+    const response = await connection.query(sql_findEmail);
+    const parsedResponse = parseRowDataPacket(response);
+    console.log('Parsed Response', parsedResponse);
+    if(parsedResponse.length > 0){
+      const match = await pkg1.compareSync(pwd, parsedResponse[0].pwd.toString());
+      if(match){
+        return {
+          success: true,
+          data: parsedResponse[0]
+        }
+      }
+      else{
+        return {
+          success: false,
+          message: 'Incorrect Credentials'
+        }
+      }
+      
+    }
+    else{
+      return {
+        success: false,
+        message: 'User Not Present'
+      }
+    }
+
+  }
+  catch(err){
+    return{
+      success: false,
+      message: err.message,
+    }
+  }
+  
+} 
+
+
   // const finalObj = connection.query(sql_findEmail, [email], async (err, result) => {
   //   console.log(err); 
   //   if(result[0]){
@@ -128,43 +166,3 @@ export const signInService = async (credentials) => {
   // });
   // console.log('FINAL OBJECT',finalObj);
   // return finalObj;
-
-  try{
-
-    const response = await connection.query(sql_findEmail);
-    const parsedResponse = parseRowDataPacket(response);
-    console.log('Parsed Response', parsedResponse);
-    if(parsedResponse.length > 0){
-      console.log
-      const match = await pkg1.compareSync(pwd, parsedResponse[0].pwd.toString());
-      console.log('Match', match);
-      if(match){
-        return {
-          success: true,
-          data: parsedResponse[0]
-        }
-      }
-      else{
-        return {
-          success: false,
-          message: 'Incorrect Credentials'
-        }
-      }
-      
-    }
-    else{
-      return {
-        success: false,
-        message: 'User Not Present'
-      }
-    }
-
-  }
-  catch(err){
-    return{
-      success: false,
-      message: err.message,
-    }
-  }
-  
-} 

@@ -27,10 +27,14 @@ import { addBugService } from '../../services/bugService';
 import Box from '@mui/material/Box';
 import Image from '../../../src/img.jpg'; // Import using relative path
 import { Paper } from '@mui/material';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+
 
 const styles = {
   paperContainer: {
-      backgroundImage: `url(${Image})`,
+    backgroundImage: `url(${Image})`,
 
     height: "100vh"
   }
@@ -199,133 +203,148 @@ const CreateTestCase = () => {
   return (
     <React.Fragment>
       <Paper style={styles.paperContainer}>
-      <Snackbar
-        open={open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        message={message}
-      />
-      {loading ? (
-        <CircularProgress color="success" />
+        <Snackbar
+          open={open}
+          autoHideDuration={6000}
+          onClose={handleClose}
+          message={message}
+        />
+        {loading ? (
+          <CircularProgress color="success" />
 
-      ) : (
+        ) : (
 
-        <>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Card variant="outlined" sx={{ bgcolor: '#AEC6CF', width: '80%' }}>
-              <CardHeader title="Test Case Details">
-              </CardHeader>
-              <CardContent>
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                  <h2>Component ID: {state.c_id}</h2>
-                </div>
-                <TextField
-                  id="tc_name"
-                  name="tc_name"
-                  label="Name"
-                  fullWidth
-                  autoComplete="Source"
-                  variant="standard"
-                  onChange={handleFormChange}
-                  value={testCaseState.tc_name}
-                />
-                <br></br>
-                <br></br>
-                <TextField
-                  id="tc_desc"
-                  name="tc_desc"
-                  label="Description"
-                  fullWidth
-                  autoComplete="Source"
-                  variant="standard"
-                  onChange={handleFormChange}
-                  value={testCaseState.tc_desc}
-                />
-                <br></br>
-                <br></br>
-                <div>
-                  <Chip
-                    color={testCaseState.c_status === 'TestReady' ? 'warning' : 'success'}
-                    label={params.id === 'new' ? 'TestReady' : status.selected} />
-                </div>
-              </CardContent>
-              <CardActions style={{ display: 'flex', justifyContent: 'center' }} >
-                <Stack>
-                  <div>
-                    <Stack direction="row" spacing={2}>
-                      {params.id !== 'new' && (
-                        <>
-                          {status.new && status.new.length > 0 && status.new.map((e) => {
-                            return (<Button variant={'contained'} onClick={() => { handleStatusChange(e, status.new) }}>{e}</Button>)
-                          })}
-                        </>
-                      )}
-                      <Button variant={'contained'} onClick={handleSubmit}>Submit</Button>
-                    </Stack>
+          <>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <Card variant="outlined" sx={{ bgcolor: '#AEC6CF', width: '80%' }}>
+                <CardHeader title="Test Case Details">
+                </CardHeader>
+                <CardContent>
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <h2>Component ID: {state.c_id}</h2>
                   </div>
+                  <TextField
+                    id="tc_name"
+                    name="tc_name"
+                    label="Name"
+                    fullWidth
+                    autoComplete="Source"
+                    variant="standard"
+                    onChange={handleFormChange}
+                    value={testCaseState.tc_name}
+                  />
                   <br></br>
-                  {(originalStatus === 'Failed') && (
-                    <>
-                      <div>
-                        This test case is Failed
-                      </div>
-                      <Button variant={'contained'} onClick={toggleDrawer(true)}>
-                        Report Bug
-                      </Button>
-                    </>
-                  )}
-                </Stack>
+                  <br></br>
+                  <TextField
+                    id="tc_desc"
+                    name="tc_desc"
+                    label="Description"
+                    fullWidth
+                    autoComplete="Source"
+                    variant="standard"
+                    onChange={handleFormChange}
+                    value={testCaseState.tc_desc}
+                  />
+                  <br></br>
+                  <br></br>
+                  <InputLabel id="demo-simple-select-label">Mode of Execution</InputLabel>
+                  <Select
+                    name="mode_of_execution"
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={testCaseState.mode_of_execution}
+                    label="Mode of executuion"
+                    onChange={handleFormChange}
+                    autoWidth
+                  >
+                    <MenuItem value={'Manual'}>Manual</MenuItem>
+                    <MenuItem value={'Automated'}>Automated</MenuItem>
+                  </Select>
+                  <br></br>
+                  <br></br>
+                  <div>
+                    <Chip
+                      color={testCaseState.c_status === 'TestReady' ? 'warning' : 'success'}
+                      label={params.id === 'new' ? 'TestReady' : status.selected} />
+                  </div>
+                </CardContent>
+                <CardActions style={{ display: 'flex', justifyContent: 'center' }} >
+                  <Stack>
+                    <div>
+                      <Stack direction="row" spacing={2}>
+                        {params.id !== 'new' && (
+                          <>
+                            {status.new && status.new.length > 0 && status.new.map((e) => {
+                              return (<Button variant={'contained'} onClick={() => { handleStatusChange(e, status.new) }}>{e}</Button>)
+                            })}
+                          </>
+                        )}
+                        <Button variant={'contained'} onClick={handleSubmit}>Submit</Button>
+                      </Stack>
+                    </div>
+                    <br></br>
+                    {(originalStatus === 'Failed') && (
+                      <>
+                        <div>
+                          This test case is Failed
+                        </div>
+                        <Button variant={'contained'} onClick={toggleDrawer(true)}>
+                          Report Bug
+                        </Button>
+                      </>
+                    )}
+                  </Stack>
 
-              </CardActions>
-            </Card>
-          </div>
-          <Button style={{ marginTop: '15px' }} variant={'contained'} onClick={() => { navigate(-1) }}>Go Back</Button>
-        </>
+                </CardActions>
+              </Card>
+            </div>
+            <Button style={{ marginTop: '15px' }} variant={'contained'} onClick={() => { navigate(-1) }}>Go Back</Button>
+          </>
 
 
-      )}
-      <Drawer
-        anchor={'right'}
-        open={drawerState}
-        onClose={toggleDrawer(false)}
-      >
-        <>
-          {drawerLoading ? (<CircularProgress color="success" />) :
+        )}
+        <Drawer
+          anchor={'right'}
+          open={drawerState}
+          onClose={toggleDrawer(false)}
+        >
+          <>
+            {drawerLoading ? (<CircularProgress color="success" />) :
 
-            (
-              <>
-                <Box
-                  sx={{ width: 300 }}
-                  role="presentation"
+              (
+                <>
+                  <Box
+                    sx={{ width: 300 }}
+                    role="presentation"
                   // onClick={toggleDrawer(false)}
                   // onKeyDown={toggleDrawer(false)}
-                >
-                <Stack>
-                <Button onClick={toggleDrawer(false)} variant={'outlined'}>Close the Drawer</Button>
-                <br></br>
-                <FormControl style={{paddingLeft: '20px'}}>
-                  <FormLabel id="demo-controlled-radio-buttons-group">Developers</FormLabel>
-                  <RadioGroup
-                    aria-labelledby="demo-controlled-radio-buttons-group"
-                    name="controlled-radio-buttons-group"
-                    value={developerState}
-                    onChange={handleDeveloperListChange}
                   >
-                    {developerListState.map((dev) => {
-                      return (
-                        <FormControlLabel value={dev.e_id} control={<Radio />} label={dev.firstName} />
-                      )
-                    })}
-                  </RadioGroup>
-                </FormControl>
-                <Button variant={'contained'} onClick={submitBug}>Report Bug</Button>
-                </Stack>
-                </Box>
-              </>
-            )}
+                    <Stack>
+                      <Button onClick={toggleDrawer(false)} variant={'outlined'}>Close the Drawer</Button>
+                      <br></br>
+                      <FormControl style={{ paddingLeft: '20px' }}>
+                        <FormLabel id="demo-controlled-radio-buttons-group">Developers</FormLabel>
+                        <RadioGroup
+                          aria-labelledby="demo-controlled-radio-buttons-group"
+                          name="controlled-radio-buttons-group"
+                          value={developerState}
+                          onChange={handleDeveloperListChange}
+                        >
+                          {developerListState.map((dev) => {
+                            return (
+                              <FormControlLabel value={dev.e_id} control={<Radio />} label={dev.firstName} />
+                            )
+                          })}
+                        </RadioGroup>
+                      </FormControl>
+                      <Button variant={'contained'} onClick={submitBug}>Report Bug</Button>
+                    </Stack>
+                  </Box>
+                </>
+              )}
 
-        </>
-      </Drawer>
+          </>
+        </Drawer>
       </Paper>
     </React.Fragment >);
 }
